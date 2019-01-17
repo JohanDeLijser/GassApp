@@ -162,7 +162,7 @@ public class HttpUtil {
     }
 
     //TODO: This requests needs to return a user object not a json
-    public void getUser(final User user, final RequestResponseListener<JSONObject> listener)
+    public void getUser(final User user, final RequestResponseListener<User> listener)
     {
 
         String url = API_URL + "/user/get";
@@ -179,7 +179,16 @@ public class HttpUtil {
 
                 if(response != null) {
 
-                    listener.getResult(response);
+                    try {
+
+                        User user = new User(response.getJSONObject("data"));
+                        listener.getResult(user);
+
+                    } catch (JSONException e) {
+
+                        listener.getResult(null);
+
+                    }
 
                 } else {
 
