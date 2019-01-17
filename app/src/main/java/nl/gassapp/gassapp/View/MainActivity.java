@@ -6,8 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
+import nl.gassapp.gassapp.DataModel.Refuel;
+import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
@@ -23,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Button editButton;
     private Button deleteButton;
     private final RefuelViewModal refuelViewModal = new RefuelViewModal();
+    private ArrayList<Refuel> allRefuels;
+
+    private LinearLayout singleRefuelContent;
 
     private Button showMonthGraphButton;
     private Button showYearGraphButton;
@@ -45,10 +57,24 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            refuelViewModal.getTrips();
+            refuelViewModal.getTrips(
+                            new RequestResponseListener<Boolean>() {
 
+                                @Override
+                                public void getResult(Boolean bool) {
+                                    if (bool) {
+                                        setSingleRefuelFields(refuelViewModal.getAllTrips());
+                                    }
+                                }
+
+                                @Override
+                                public void getError(int errorCode) {
+                                    System.out.println(errorCode);
+                                }
+
+                            }
+                    );
         }
-
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
         initTabs(tabHost);
@@ -221,4 +247,59 @@ public class MainActivity extends AppCompatActivity {
         startActivity(graphIntent);
     }
 
+    private void setSingleRefuelFields(ArrayList<Refuel> refuels) {
+        singleRefuelContent = (LinearLayout) findViewById(R.id.singleRefuelContent);
+
+        if (!refuels.isEmpty()) {
+
+            for (Refuel refuel : refuels) {
+
+                LinearLayout refuelLayout = new LinearLayout(this);
+                refuelLayout.setOrientation(LinearLayout.VERTICAL);
+
+                LinearLayout refuelLitersLayout = new LinearLayout(this);
+                TextView refuelLitersTitle = new TextView(this);
+                TextView refuelLiters = new TextView(this);
+
+                LinearLayout refuelPriceLayout = new LinearLayout(this);
+                TextView refuelPriceTitle = new TextView(this);
+                TextView refuelPrice = new TextView(this);
+
+                LinearLayout refuelKilometersLayout = new LinearLayout(this);
+                TextView refuelKilometersTitle = new TextView(this);
+                TextView refuelKilometers = new TextView(this);
+
+                refuelLitersLayout.setOrientation(LinearLayout.HORIZONTAL);
+                refuelPriceLayout.setOrientation(LinearLayout.HORIZONTAL);
+                refuelKilometersLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                refuelLitersTitle.setText("Liters");
+                refuelPriceTitle.setText("Price");
+                refuelKilometersTitle.setText("Kilometers");
+
+                refuelLiters.setText(refuel.getLiters().toString() + "L");
+                refuelPrice.setText("€" + refuel.getPrice().toString());
+                refuelKilometers.setText(refuel.getKilometers().toString() + "km");
+
+                refuelLitersLayout.addView(refuelLitersTitle);
+                refuelLitersLayout.addView(refuelLiters);
+
+                refuelPriceLayout.addView(refuelPriceTitle);
+                refuelPriceLayout.addView(refuelPrice);
+
+                refuelKilometersLayout.addView(refuelKilometersTitle);
+                refuelKilometersLayout.addView(refuelKilometers);
+
+                refuelLayout.addView(refuelLitersLayout);
+                refuelLayout.addView(refuelPriceLayout);
+                refuelLayout.addView(refuelKilometersLayout);
+
+                singleRefuelContent.addView(refuelLayout);
+            }
+        }
+    }
+
+    private void setMonthRefuelFields(ArrayList<Refuel> refuels) {
+
+    }
 }

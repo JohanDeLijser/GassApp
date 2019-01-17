@@ -1,14 +1,11 @@
 package nl.gassapp.gassapp.ViewModel;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 
 import nl.gassapp.gassapp.DataModel.Refuel;
-import nl.gassapp.gassapp.DataModel.Refuels;
 import nl.gassapp.gassapp.DataModel.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
@@ -17,11 +14,11 @@ import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 public class RefuelViewModal {
 
     private User applicationUser;
+    private ArrayList<Refuel> refuels = new ArrayList<Refuel>();
 
-    public void getTrips() {
+    public void getTrips(final RequestResponseListener<Boolean> listener) {
 
         applicationUser = SharedPreferencesUtil.getInstance().getUser();
-        System.out.println(applicationUser);
 
         HttpUtil.getInstance().getRefuels(applicationUser, new RequestResponseListener<JSONObject>()
         {
@@ -30,15 +27,14 @@ public class RefuelViewModal {
             public void getResult(JSONObject result)
             {
                 try {
-                    System.out.println(result.getJSONArray("data"));
-                    ArrayList<Refuel> refuels = new ArrayList<Refuel>();
+                    if (result.getJSONArray("data").length() > 0) {
+                        for (int i = 0; i < result.getJSONArray("data").length(); i++) {
+                            Refuel refuel = new Refuel(result.getJSONArray("data").getJSONObject(i));
+                            refuels.add(refuel);
+                        }
 
-                    for (int i = 0; i < result.getJSONArray("data").length(); i++) {
-                        Refuel refuel = new Refuel(result.getJSONArray("data").getJSONObject(i));
-                        refuels.add(refuel);
+                        listener.getResult(true);
                     }
-
-
 
                 } catch (JSONException e) {
                     System.out.println("Exception while output:" + e);
@@ -51,5 +47,14 @@ public class RefuelViewModal {
                 System.out.println(error);
             }
         });
+    }
+
+    public ArrayList<Refuel> getAllTrips() {
+        return refuels;
+    }
+
+    public ArrayList<Refuel> getMonthlyRefuel() {
+
+        return refuels;
     }
 }

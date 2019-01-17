@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 public class Refuel {
 
-    private float liters;
-    private float price;
-    private float kilometers;
+    private Double liters;
+    private Double price;
+    private Double kilometers;
 
     private String picturePath;
     private String latitude;
@@ -17,9 +17,9 @@ public class Refuel {
 
         try {
 
-            this.liters = object.getInt("liters");
-            this.price = object.getInt("price");
-            this.kilometers = object.getInt("kilometers");
+            this.liters = object.getDouble("liters");
+            this.price = object.getDouble("price");
+            this.kilometers = object.getDouble("kilometers");
 
         } catch (JSONException e) {
 
@@ -27,5 +27,17 @@ public class Refuel {
 
         }
 
+    }
+
+    public Double getLiters() {
+        return liters;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Double getKilometers() {
+        return kilometers;
     }
 }
