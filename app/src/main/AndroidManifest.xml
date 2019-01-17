@@ -9,17 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewModel.MainActivity">
+        <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewModel.GraphActivity" />
-        <activity android:name=".ViewModel.AddRefuelActivity" />
-        <activity android:name=".ViewModel.ImageAndLocationActivity" />
-        <activity android:name=".ViewModel.EditRefuelActivity"></activity>
+        <activity android:name=".View.GraphActivity" />
+        <activity android:name=".View.AddRefuelActivity" />
+        <activity android:name=".View.ImageAndLocationActivity" />
+        <activity android:name=".View.EditRefuelActivity"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

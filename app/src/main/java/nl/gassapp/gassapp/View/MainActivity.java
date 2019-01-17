@@ -1,4 +1,4 @@
-package nl.gassapp.gassapp.ViewModel;
+package nl.gassapp.gassapp.View;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
 
-import nl.gassapp.gassapp.Model.Authentication;
 import nl.gassapp.gassapp.R;
+import nl.gassapp.gassapp.Utils.HttpUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,11 +23,13 @@ public class MainActivity extends AppCompatActivity {
     private Button showMonthGraphButton;
     private Button showYearGraphButton;
 
-    private Authentication authentication = new Authentication();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Instance http util
+        HttpUtil.getInstance(this);
+
         setContentView(R.layout.activity_main);
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authentication.logout();
+
             }
         });
 
