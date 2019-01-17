@@ -1,6 +1,7 @@
 package nl.gassapp.gassapp.View;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TabHost;
 
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
+import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,10 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
         //Instance http util
         HttpUtil.getInstance(this);
+        SharedPreferencesUtil.getInstance(this);
 
         setContentView(R.layout.activity_main);
 
-        openLoginActivity();
+        //Load the login when no user is loaded
+        //TODO: validate if the token is still valid
+        if (SharedPreferencesUtil.getInstance().getUser() == null) {
+
+            openLoginActivity();
+
+        }
+
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
         initTabs(tabHost);
@@ -42,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                SharedPreferencesUtil.getInstance().setUser(null);
+                openLoginActivity();
             }
         });
 

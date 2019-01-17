@@ -1,5 +1,8 @@
 package nl.gassapp.gassapp.DataModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class User {
 
     private String email;
@@ -7,6 +10,23 @@ public class User {
     private String token;
     private String firstname;
     private String lastname;
+
+    public User(JSONObject object) {
+
+        try {
+
+            this.email = object.getString("email");
+            this.firstname = object.getString("firstname");
+            this.lastname = object.getString("lastname");
+            this.token = object.getString("token");
+
+        } catch (JSONException e) {
+
+            //no code
+
+        }
+
+    }
 
     public User(String email, String password) {
 
@@ -42,6 +62,23 @@ public class User {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String toJSON(){
+
+        JSONObject jsonObject= new JSONObject();
+
+        try {
+            jsonObject.put("email", getEmail());
+            jsonObject.put("firstname", getFirstname());
+            jsonObject.put("lastname", getLastname());
+            jsonObject.put("token", getToken());
+
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            return "";
+        }
+
     }
 
 }

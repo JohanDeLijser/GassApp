@@ -140,11 +140,7 @@ public class HttpUtil {
 
                         JSONObject data = response.getJSONObject("data");
 
-                        User responseUser = new User(
-                                data.getString("email"),
-                                data.getString("firstname"),
-                                data.getString("lastname"),
-                                data.getString("token"));
+                        User responseUser = new User(data);
 
                         listener.getResult(responseUser);
 
