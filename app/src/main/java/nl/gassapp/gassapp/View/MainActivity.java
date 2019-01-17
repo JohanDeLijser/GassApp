@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        openLoginActivity();
+
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
         initTabs(tabHost);
 
@@ -149,6 +151,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Opens the login screen
+     */
+    private void openLoginActivity() {
+
+        Intent openLoginIntent = new Intent(this, LoginActivity.class);
+        openLoginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(openLoginIntent);
+
+    }
+
+    /**
      * Opens the add refuel activity
      */
     private void openAddRefuelActivity() {
@@ -187,4 +200,5 @@ public class MainActivity extends AppCompatActivity {
         Intent graphIntent = new Intent(this, GraphActivity.class);
         startActivity(graphIntent);
     }
+
 }

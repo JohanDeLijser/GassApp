@@ -12,4 +12,5 @@ public class ImageAndLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_and_location);
     }
+
 }
