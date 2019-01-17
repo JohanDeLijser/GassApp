@@ -15,12 +15,12 @@ public class RefuelViewModal {
 
         User loginUser = new User("jeroenfrenken@icloud.com", "Jeroen12");
 
-        HttpUtil.getInstance().loginRequest(loginUser, new RequestResponseListener<User>() {
+        HttpUtil.getInstance().authenticateUser(loginUser, new RequestResponseListener<User>() {
             @Override
             public void getResult(User object) {
                 applicationUser = object;
 
-                HttpUtil.getInstance().getRequest(applicationUser, new RequestResponseListener<JSONObject>()
+                HttpUtil.getInstance().getUser(applicationUser, new RequestResponseListener<JSONObject>()
                 {
 
                     @Override

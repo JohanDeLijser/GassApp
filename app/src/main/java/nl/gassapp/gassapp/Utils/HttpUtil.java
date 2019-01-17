@@ -59,11 +59,69 @@ public class HttpUtil {
         return instance;
     }
 
-    public void loginRequest(User user, final RequestResponseListener<User> listener)
+    private void request(
+            int method,
+            String url,
+            final Map<String, String> headers,
+            Response.Listener<JSONObject> okCallback,
+            final RequestResponseListener listener
+    ) {
+
+        this.request(method, url, null, headers, okCallback, listener);
+
+    }
+
+    private void request(
+            int method,
+            String url,
+            JSONObject params,
+            final Map<String, String> headers,
+            Response.Listener<JSONObject> okCallback,
+            final RequestResponseListener listener
+    ) {
+
+        JsonObjectRequest request = new JsonObjectRequest(method, url, params,
+                okCallback,
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+
+                        if (error.networkResponse != null)
+                        {
+
+                            listener.getError(error.networkResponse.statusCode);
+
+                        } else {
+
+                            listener.getError(0);
+
+                        }
+
+                    }
+                }
+        ) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                return headers;
+
+            }
+
+        };
+
+        requestQueue.add(request);
+
+    }
+
+    public void authenticateUser(User user, final RequestResponseListener<User> listener)
     {
 
         String url = API_URL + "/authenticate/user";
 
+        Map<String, String> headers = new HashMap<String, String>();
         Map<String, String> params = new HashMap<String, String>();
 
         params.put("email", user.getEmail());
@@ -71,122 +129,78 @@ public class HttpUtil {
 
         JSONObject jsonParams = new JSONObject(params);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonParams,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
+        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
 
-                        if(response != null) {
+                if(response != null) {
 
-                            try {
+                    try {
 
-                                JSONObject data = response.getJSONObject("data");
+                        JSONObject data = response.getJSONObject("data");
 
-                                User responseUser = new User(
-                                        data.getString("email"),
-                                        data.getString("firstname"),
-                                        data.getString("lastname"),
-                                        data.getString("token"));
+                        User responseUser = new User(
+                                data.getString("email"),
+                                data.getString("firstname"),
+                                data.getString("lastname"),
+                                data.getString("token"));
 
-                                listener.getResult(responseUser);
+                        listener.getResult(responseUser);
 
-                            } catch (JSONException e) {
+                    } catch (JSONException e) {
 
-                                listener.getError(0);
-
-                            }
-
-                        } else {
-
-                            listener.getError(0);
-
-                        }
+                        listener.getError(0);
 
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
 
-                        if (error.networkResponse != null)
-                        {
+                } else {
 
-                            listener.getError(error.networkResponse.statusCode);
+                    listener.getError(0);
 
-                        } else {
-
-                            listener.getError(0);
-
-                        }
-
-                    }
                 }
-        );
 
-        requestQueue.add(request);
+            }
+        }, listener);
 
     }
 
-    public void getRequest(final User user, final RequestResponseListener<JSONObject> listener)
+    //TODO: This requests needs to return a user object not a json
+    public void getUser(final User user, final RequestResponseListener<JSONObject> listener)
     {
 
         String url = API_URL + "/user/get";
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
 
-                        if(response != null) {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("authentication", user.getToken());
 
-                            listener.getResult(response);
+        this.request(Request.Method.GET, url, headers, new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
 
-                        } else {
+                if(response != null) {
 
-                            listener.getError(0);
+                    listener.getResult(response);
 
-                        }
+                } else {
 
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-
-                        if (error.networkResponse != null)
-                        {
-                            listener.getError(error.networkResponse.statusCode);
-                        } else {
-
-                            listener.getError(0);
-
-                        }
-
-                    }
-                }
-            ) {
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-
-                    Map<String, String>  params = new HashMap<String, String>();
-                    params.put("authentication", user.getToken());
-
-                    return params;
+                    listener.getError(0);
 
                 }
 
-        };
+            }
+        }, listener);
 
-        requestQueue.add(request);
     }
+
+    /*
+
+        TODO: CRUD Refuel requests
+
+     */
 
 }
