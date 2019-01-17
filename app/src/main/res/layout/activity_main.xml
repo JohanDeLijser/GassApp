@@ -8,7 +8,7 @@
     tools:context=".View.MainActivity"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -23,9 +23,11 @@
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"/>
+            android:text="+"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +65,7 @@
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <!-- tab 1 -->
                     <LinearLayout
@@ -76,23 +78,38 @@
                             android:layout_height="wrap_content"
                             android:text="This is tab 1"/>
 
-                        <Button
-                            android:id="@+id/showImageAndLocationButton"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="View image and location" />
+                            android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/editButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edit" />
+                            <Button
+                                android:id="@+id/showImageAndLocationButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="View image and location" />
 
-                        <Button
-                            android:id="@+id/deleteButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Delete" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/editButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Edit"
+                                    android:layout_weight="1"/>
+
+                                <Button
+                                    android:id="@+id/deleteButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Delete"
+                                    android:layout_weight="1"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- tab 2 -->
@@ -109,7 +126,7 @@
 
                         <Button
                             android:id="@+id/showMonthGraphButton"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Show graph" />
                     </LinearLayout>
@@ -120,6 +137,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -127,7 +145,7 @@
 
                         <Button
                             android:id="@+id/showYearGraphButton"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Show graph" />
                     </LinearLayout>

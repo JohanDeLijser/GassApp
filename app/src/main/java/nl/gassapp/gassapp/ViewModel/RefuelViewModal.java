@@ -1,11 +1,15 @@
 package nl.gassapp.gassapp.ViewModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import nl.gassapp.gassapp.DataModel.Refuel;
+import nl.gassapp.gassapp.DataModel.Refuels;
 import nl.gassapp.gassapp.DataModel.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
+import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class RefuelViewModal {
 
@@ -13,52 +17,33 @@ public class RefuelViewModal {
 
     public void getTrips() {
 
-        User loginUser = new User("jeroenfrenken@icloud.com", "Jeroen12");
+        applicationUser = SharedPreferencesUtil.getInstance().getUser();
+        System.out.println(applicationUser);
 
-        HttpUtil.getInstance().authenticateUser(loginUser, new RequestResponseListener<User>() {
+        HttpUtil.getInstance().getRefuels(applicationUser, new RequestResponseListener<JSONObject>()
+        {
+
             @Override
-            public void getResult(User object) {
-                applicationUser = object;
+            public void getResult(JSONObject result)
+            {
+                try {
+                    System.out.println(result.getJSONArray("data"));
+                    Refuels refuels = new Refuels();
 
-                HttpUtil.getInstance().getUser(applicationUser, new RequestResponseListener<JSONObject>()
-                {
-
-                    @Override
-                    public void getResult(JSONObject result)
-                    {
-
-                        try {
-//                    System.out.println(result.getJSONObject("data").getString("email"));
-                            System.out.println(result.getJSONObject("data"));
-
-                        } catch (JSONException e) {
-
-                            System.out.println("Exception while output");
-
-                        }
+                    for (int i = 0; i < result.getJSONArray("data").length(); i++) {
+                        Refuel refuel = new Refuel(result.getJSONArray("data").getJSONObject(i));
 
                     }
-
-                    @Override
-                    public void getError(int error)
-                    {
-
-                        System.out.println(error);
-
-                    }
-
-                });
-
+                } catch (JSONException e) {
+                    System.out.println("Exception while output:" + e);
+                }
             }
 
             @Override
-            public void getError(int object) {
-                System.out.println("Error while log in");
+            public void getError(int error)
+            {
+                System.out.println(error);
             }
         });
-
-
-
     }
-
 }

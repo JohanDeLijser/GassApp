@@ -11,6 +11,7 @@ import android.widget.TabHost;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
+import nl.gassapp.gassapp.ViewModel.RefuelViewModal;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button showImageAndLocationButton;
     private Button editButton;
     private Button deleteButton;
+    private final RefuelViewModal refuelViewModal = new RefuelViewModal();
 
     private Button showMonthGraphButton;
     private Button showYearGraphButton;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         handleAddButton(addButton);
 
 
+        //Single tab
         showImageAndLocationButton = (Button) findViewById(R.id.showImageAndLocationButton);
         handleShowImageAndLocationButton(showImageAndLocationButton);
 
@@ -70,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
         deleteButton = (Button) findViewById(R.id.deleteButton);
         handleDeleteButton(deleteButton);
 
+        refuelViewModal.getTrips();
+
+        //Month tab
         showMonthGraphButton = (Button) findViewById(R.id.showMonthGraphButton);
         handleShowMonthGraphButton(showMonthGraphButton);
 
+        //Year tab
         showYearGraphButton = (Button) findViewById(R.id.showYearGraphButton);
         handleYearGraphButton(showYearGraphButton);
     }
