@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
             openLoginActivity();
 
+        } else {
+
+            refuelViewModal.getTrips();
+
         }
 
 
@@ -72,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
         deleteButton = (Button) findViewById(R.id.deleteButton);
         handleDeleteButton(deleteButton);
-
-        refuelViewModal.getTrips();
 
         //Month tab
         showMonthGraphButton = (Button) findViewById(R.id.showMonthGraphButton);

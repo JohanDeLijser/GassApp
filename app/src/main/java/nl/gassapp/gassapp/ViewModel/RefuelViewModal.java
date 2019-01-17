@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Ref;
+import java.util.ArrayList;
+
 import nl.gassapp.gassapp.DataModel.Refuel;
 import nl.gassapp.gassapp.DataModel.Refuels;
 import nl.gassapp.gassapp.DataModel.User;
@@ -28,12 +31,15 @@ public class RefuelViewModal {
             {
                 try {
                     System.out.println(result.getJSONArray("data"));
-                    Refuels refuels = new Refuels();
+                    ArrayList<Refuel> refuels = new ArrayList<Refuel>();
 
                     for (int i = 0; i < result.getJSONArray("data").length(); i++) {
                         Refuel refuel = new Refuel(result.getJSONArray("data").getJSONObject(i));
-
+                        refuels.add(refuel);
                     }
+
+
+
                 } catch (JSONException e) {
                     System.out.println("Exception while output:" + e);
                 }
