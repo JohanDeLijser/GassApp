@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
 
+import nl.gassapp.gassapp.DataModel.User;
+import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
@@ -37,12 +39,47 @@ public class MainActivity extends AppCompatActivity {
 
         //Load the login when no user is loaded
         //TODO: validate if the token is still valid
-        if (SharedPreferencesUtil.getInstance().getUser() == null) {
+
+        final User user = SharedPreferencesUtil.getInstance().getUser();
+
+        if (user == null) {
 
             openLoginActivity();
 
-        }
+        } else {
 
+            HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
+
+                @Override
+                public void getResult(User object) {
+
+                    if (!user.getEmail().equals(object.getEmail())) {
+
+                        SharedPreferencesUtil.getInstance().setUser(null);
+                        openLoginActivity();
+
+                    } else {
+
+                        SharedPreferencesUtil.getInstance().setUser(null);
+
+                        openLoginActivity();
+
+                    }
+
+                }
+
+                @Override
+                public void getError(int error) {
+
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    openLoginActivity();
+
+                }
+
+            });
+
+        }
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
         initTabs(tabHost);
