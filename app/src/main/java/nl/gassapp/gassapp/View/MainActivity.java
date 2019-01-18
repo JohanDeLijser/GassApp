@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -200,45 +202,58 @@ public class MainActivity extends AppCompatActivity {
 
             for (Refuel refuel : refuels) {
 
+                // init all layouts and fields
                 LinearLayout refuelLayout = new LinearLayout(this);
-                refuelLayout.setOrientation(LinearLayout.VERTICAL);
 
-                LinearLayout refuelLitersLayout = new LinearLayout(this);
+                LinearLayout litersRow = new LinearLayout(this);
+                litersRow.setOrientation(LinearLayout.HORIZONTAL);
                 TextView refuelLitersTitle = new TextView(this);
                 TextView refuelLiters = new TextView(this);
 
-                LinearLayout refuelPriceLayout = new LinearLayout(this);
+                LinearLayout priceRow = new LinearLayout(this);
+                priceRow.setOrientation(LinearLayout.HORIZONTAL);
                 TextView refuelPriceTitle = new TextView(this);
                 TextView refuelPrice = new TextView(this);
 
-                LinearLayout refuelKilometersLayout = new LinearLayout(this);
+                LinearLayout kilometersRow = new LinearLayout(this);
+                kilometersRow.setOrientation(LinearLayout.HORIZONTAL);
                 TextView refuelKilometersTitle = new TextView(this);
                 TextView refuelKilometers = new TextView(this);
 
-                refuelLitersLayout.setOrientation(LinearLayout.HORIZONTAL);
-                refuelPriceLayout.setOrientation(LinearLayout.HORIZONTAL);
-                refuelKilometersLayout.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout priceKmRow = new LinearLayout(this);
+                priceKmRow.setOrientation(LinearLayout.HORIZONTAL);
+                TextView refuelPriceKmTitle = new TextView(this);
+                TextView refuelPriceKm = new TextView(this);
 
-                refuelLitersTitle.setText("Liters");
-                refuelPriceTitle.setText("Price");
-                refuelKilometersTitle.setText("Kilometers");
+                // set values of above initialized fields
+                refuelLitersTitle.setText("Liters: ");
+                refuelPriceTitle.setText("Price: ");
+                refuelKilometersTitle.setText("Kilometers: ");
+                refuelPriceKmTitle.setText("Price p/km: ");
 
                 refuelLiters.setText(refuel.getLiters().toString() + "L");
                 refuelPrice.setText("€" + refuel.getPrice().toString());
                 refuelKilometers.setText(refuel.getKilometers().toString() + "km");
+                refuelPriceKmTitle.setText("€" + refuel.getPricePerKilometer());
 
-                refuelLitersLayout.addView(refuelLitersTitle);
-                refuelLitersLayout.addView(refuelLiters);
+                litersRow.addView(refuelLitersTitle);
+                litersRow.addView(refuelLiters);
 
-                refuelPriceLayout.addView(refuelPriceTitle);
-                refuelPriceLayout.addView(refuelPrice);
+                priceRow.addView(refuelPriceTitle);
+                priceRow.addView(refuelPrice);
 
-                refuelKilometersLayout.addView(refuelKilometersTitle);
-                refuelKilometersLayout.addView(refuelKilometers);
+                kilometersRow.addView(refuelKilometersTitle);
+                kilometersRow.addView(refuelKilometers);
 
-                refuelLayout.addView(refuelLitersLayout);
-                refuelLayout.addView(refuelPriceLayout);
-                refuelLayout.addView(refuelKilometersLayout);
+                priceKmRow.addView(refuelPriceKmTitle);
+                priceKmRow.addView(refuelPriceKm);
+
+                refuelLayout.setOrientation(LinearLayout.VERTICAL);
+
+                refuelLayout.addView(litersRow);
+                refuelLayout.addView(priceRow);
+                refuelLayout.addView(kilometersRow);
+                refuelLayout.addView(priceKmRow);
 
                 singleRefuelContent.addView(refuelLayout);
             }
