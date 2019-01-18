@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.GraphActivity" />
         <activity android:name=".View.AddRefuelActivity" />
         <activity android:name=".View.ImageAndLocationActivity" />
         <activity android:name=".View.EditRefuelActivity" />

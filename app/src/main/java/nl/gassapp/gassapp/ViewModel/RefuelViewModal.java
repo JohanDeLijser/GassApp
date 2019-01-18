@@ -54,7 +54,6 @@ public class RefuelViewModal {
     }
 
     public ArrayList<Refuel> getMonthlyRefuel() {
-
         return refuels;
     }
 }

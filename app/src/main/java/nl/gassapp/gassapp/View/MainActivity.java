@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout singleRefuelContent;
 
-    private Button showMonthGraphButton;
-    private Button showYearGraphButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,14 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         deleteButton = (Button) findViewById(R.id.deleteButton);
         handleDeleteButton(deleteButton);
-
-        //Month tab
-        showMonthGraphButton = (Button) findViewById(R.id.showMonthGraphButton);
-        handleShowMonthGraphButton(showMonthGraphButton);
-
-        //Year tab
-        showYearGraphButton = (Button) findViewById(R.id.showYearGraphButton);
-        handleYearGraphButton(showYearGraphButton);
     }
 
     /**
@@ -169,33 +158,6 @@ public class MainActivity extends AppCompatActivity {
     private void handleDeleteButton(Button deleteButton) {
 
     }
-
-    /**
-     * Handles onclick for specific button
-     * @param showMonthGraphButton
-     */
-    private void handleShowMonthGraphButton(Button showMonthGraphButton) {
-        showMonthGraphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMonthGraphActivity();
-            }
-        });
-    }
-
-    /**
-     * Handles onclick for specific button
-     * @param showYearGraphButton
-     */
-    private void handleYearGraphButton(Button showYearGraphButton) {
-        showYearGraphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openYearGraphActivity();
-            }
-        });
-    }
-
     /**
      * Opens the login screen
      */
@@ -229,22 +191,6 @@ public class MainActivity extends AppCompatActivity {
     private void openEditActivity() {
         Intent editIntent = new Intent(this, EditRefuelActivity.class);
         startActivity(editIntent);
-    }
-
-    /**
-     * Opens the month graph activity
-     */
-    private void openMonthGraphActivity() {
-        Intent graphIntent = new Intent(this, GraphActivity.class);
-        startActivity(graphIntent);
-    }
-
-    /**
-     * Opens the year graph activity
-     */
-    private void openYearGraphActivity() {
-        Intent graphIntent = new Intent(this, GraphActivity.class);
-        startActivity(graphIntent);
     }
 
     private void setSingleRefuelFields(ArrayList<Refuel> refuels) {
