@@ -2,72 +2,65 @@ package nl.gassapp.gassapp.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Intent;
 
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.Views.RegisterActivity;
 
-public class LoginViewModel extends ViewModel {
+public class RegisterViewModel extends ViewModel {
 
-    public static final int LOGIN_OK = 0;
-    public static final int LOGIN_FALSE = 1;
-    public static final int LOGIN_ERROR = 2;
+    public static final int REGISTER_OK = 0;
+    public static final int REGISTER_FALSE = 1;
+    public static final int REGISTER_ERROR = 2;
 
     private User user;
 
     private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
-    public LoginViewModel() {
-
+    public RegisterViewModel() {
         user = new User();
-
     }
 
     public void afterEmailTextChanged(CharSequence s) {
-
         user.setEmail(s.toString());
+    }
 
+    public void afterFirstnameTextChanged(CharSequence s) {
+        user.setFirstname(s.toString());
+    }
+
+    public void afterLastnameTextChanged(CharSequence s) {
+        user.setLastname(s.toString());
     }
 
     public void afterPasswordTextChanged(CharSequence s) {
-
         user.setPassword(s.toString());
-
     }
 
-    public void onLoginClicked() {
+    public void onRegisterClicked() {
 
         this.loadingState.setValue(true);
 
-        HttpUtil.getInstance().authenticateUser(user, new RequestResponseListener<User>() {
+        HttpUtil.getInstance().registerUser(user, new RequestResponseListener<User>() {
             @Override
             public void getResult(User object) {
-                user = object;
                 SharedPreferencesUtil.getInstance().setUser(user);
-                returnMessage.setValue(LOGIN_OK);
+                returnMessage.setValue(REGISTER_OK);
                 loadingState.setValue(false);
             }
 
             @Override
             public void getError(int errorCode) {
                 if (errorCode != 400) {
-
-                    returnMessage.setValue(LOGIN_ERROR);
-
+                    returnMessage.setValue(REGISTER_ERROR);
                 } else {
-
-                    returnMessage.setValue(LOGIN_FALSE);
-
+                    returnMessage.setValue(REGISTER_FALSE);
                 }
-
                 loadingState.setValue(false);
             }
         });
-
     }
 
     public MutableLiveData<Integer> getReturnMessage() {
@@ -81,5 +74,4 @@ public class LoginViewModel extends ViewModel {
         return this.loadingState;
 
     }
-
 }

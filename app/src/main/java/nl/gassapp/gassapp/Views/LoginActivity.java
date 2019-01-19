@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
 
     private Button loginButton;
+
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,14 @@ public class LoginActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
 
         setupListeners();
+
+        registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRegisterView();
+            }
+        });
 
     }
 
@@ -145,6 +156,11 @@ public class LoginActivity extends AppCompatActivity {
         openMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(openMain);
 
+    }
+
+    private void openRegisterView() {
+        Intent openRegister = new Intent(this, RegisterActivity.class);
+        startActivity(openRegister);
     }
 
 }

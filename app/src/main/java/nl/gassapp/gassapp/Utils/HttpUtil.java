@@ -161,6 +161,54 @@ public class HttpUtil {
 
     }
 
+    public void registerUser(User user, final RequestResponseListener<User> listener)
+    {
+
+        String url = API_URL + "/user/create";
+
+        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("email", user.getEmail());
+        params.put("password", user.getPassword());
+        params.put("firstname", user.getFirstname());
+        params.put("lastname", user.getLastname());
+
+        JSONObject jsonParams = new JSONObject(params);
+
+        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                if(response != null) {
+
+                    try {
+
+                        JSONObject data = response.getJSONObject("data");
+
+                        User responseUser = new User(data);
+
+                        listener.getResult(responseUser);
+
+                    } catch (JSONException e) {
+
+                        listener.getError(0);
+
+                    }
+
+                } else {
+
+                    listener.getError(0);
+
+                }
+
+            }
+        }, listener);
+
+    }
+
     public void getUser(final User user, final RequestResponseListener<User> listener)
     {
 

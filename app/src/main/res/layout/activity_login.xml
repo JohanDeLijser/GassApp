@@ -60,6 +60,13 @@
             android:onClick="@{()->viewModel.onLoginClicked()}"
             />
 
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Havent got an account? Register here!"
+                />
+
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -1,5 +1,7 @@
 package nl.gassapp.gassapp.viewmodels;
 
+import android.arch.lifecycle.ViewModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +13,7 @@ import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
-public class AddRefuelViewModal {
+public class AddRefuelViewModal extends ViewModel {
 
     private User applicationUser;
     private ArrayList<Refuel> refuels = new ArrayList<Refuel>();

@@ -66,6 +66,10 @@ public class User {
         this.email = email;
     }
 
+    public void setFirstname(String firstname) { this.firstname = firstname; }
+
+    public void setLastname(String lastname) { this.firstname = lastname; }
+
     public void setPassword(@NonNull String password) {
         this.password = password;
     }
