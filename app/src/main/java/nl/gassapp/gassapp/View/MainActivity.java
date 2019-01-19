@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import nl.gassapp.gassapp.DataModel.Refuel;
+import nl.gassapp.gassapp.DataModel.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
@@ -50,12 +51,47 @@ public class MainActivity extends AppCompatActivity {
 
         //Load the login when no user is loaded
         //TODO: validate if the token is still valid
-        if (SharedPreferencesUtil.getInstance().getUser() == null) {
+
+        final User user = SharedPreferencesUtil.getInstance().getUser();
+
+        if (user == null) {
 
             openLoginActivity();
 
         } else {
 
+          HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
+
+                @Override
+                public void getResult(User object) {
+
+                    if (!user.getEmail().equals(object.getEmail())) {
+
+                        SharedPreferencesUtil.getInstance().setUser(null);
+                        openLoginActivity();
+
+                    } else {
+
+                        SharedPreferencesUtil.getInstance().setUser(null);
+
+                        openLoginActivity();
+
+                    }
+
+                }
+
+                @Override
+                public void getError(int error) {
+
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    openLoginActivity();
+
+                }
+
+            });
+          
+          
             refuelViewModal.getTrips(
                             new RequestResponseListener<Boolean>() {
 
@@ -73,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                     );
+          
+            
+
         }
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost);

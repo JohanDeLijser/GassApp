@@ -52,8 +52,4 @@ public class RefuelViewModal {
     public ArrayList<Refuel> getAllTrips() {
         return refuels;
     }
-
-    public ArrayList<Refuel> getMonthlyRefuel() {
-        return refuels;
-    }
 }
