@@ -10,7 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -162,7 +161,6 @@ public class HttpUtil {
 
     }
 
-    //TODO: This requests needs to return a user object not a json
     public void getUser(final User user, final RequestResponseListener<User> listener)
     {
 

@@ -2,9 +2,13 @@ package nl.gassapp.gassapp.View;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -17,6 +21,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import nl.gassapp.gassapp.Adapters.RefuelListAdapter;
 import nl.gassapp.gassapp.DataModel.Refuel;
 import nl.gassapp.gassapp.DataModel.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
@@ -27,6 +32,10 @@ import nl.gassapp.gassapp.ViewModel.RefuelViewModal;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private Button logoutButton;
     private Button addButton;
@@ -49,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.refuelRecyclerView);
+
+        ArrayList<Refuel> refuels = new ArrayList<>();
+
+        Refuel refuel = new Refuel(12.0, 19.8, 8.6);
+
+        refuels.add(refuel);
+
+        RefuelListAdapter refuelListAdapter = new RefuelListAdapter(this, refuels);
+        mRecyclerView.setAdapter(refuelListAdapter);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+
+
         //Load the login when no user is loaded
         //TODO: validate if the token is still valid
 
@@ -70,12 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferencesUtil.getInstance().setUser(null);
                         openLoginActivity();
 
-                    } else {
-
-                        SharedPreferencesUtil.getInstance().setUser(null);
-
-                        openLoginActivity();
-
                     }
 
                 }
@@ -90,25 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             });
-          
-          
-            refuelViewModal.getTrips(
-                            new RequestResponseListener<Boolean>() {
-
-                                @Override
-                                public void getResult(Boolean bool) {
-                                    if (bool) {
-                                        setSingleRefuelFields(refuelViewModal.getAllTrips());
-                                    }
-                                }
-
-                                @Override
-                                public void getError(int errorCode) {
-                                    System.out.println(errorCode);
-                                }
-
-                            }
-                    );
           
             
 

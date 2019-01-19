@@ -44,10 +44,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void handleLoginButton(Button loginButton) {
+    private void handleLoginButton(final Button loginButton) {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                loginButton.setEnabled(false);
 
                 loginViewModal.loginUser(
                         username.getText().toString(),
@@ -56,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void getResult(Boolean bool) {
-
-                                System.out.println(bool);
 
                                 if (bool) {
 
@@ -68,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void getError(int errorCode) {
-                                System.out.println(errorCode);
+
+                                loginButton.setEnabled(true);
                             }
 
                         }

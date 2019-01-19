@@ -26,11 +26,25 @@ public class Refuel {
             this.price = object.getDouble("price");
             this.kilometers = object.getDouble("kilometers");
 
+            if (!object.getString("picturePath").equals("")) {
+
+                this.picturePath = object.getString("picturePath");
+
+            }
+
         } catch (JSONException e) {
 
             //no code
 
         }
+
+    }
+
+    public Refuel(Double liters, Double price, Double kilometers) {
+
+        this.liters = liters;
+        this.price = price;
+        this.kilometers = kilometers;
 
     }
 
