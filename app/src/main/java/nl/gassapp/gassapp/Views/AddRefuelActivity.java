@@ -93,9 +93,9 @@ public class AddRefuelActivity extends AppCompatActivity {
 
     private void saveCurrentRefuel() {
         EditText kilometers = (EditText) findViewById(R.id.kilometers);
-        kilometersDriven = Double.parseDouble(kilometers.getText().toString());
 
-        if (kilometersDriven != 0 && !base64Image.isEmpty()) {
+        if (kilometers != null && base64Image != null) {
+            kilometersDriven = Double.parseDouble(kilometers.getText().toString());
             System.out.println(kilometersDriven);
             System.out.println("Image is set");
         } else {
