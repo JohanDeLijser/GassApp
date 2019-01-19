@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
+
 
 import java.util.ArrayList;
 
@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Refuel> refuels = new ArrayList<>();
 
         Refuel refuel = new Refuel(12.0, 19.8, 8.6);
+
+        refuels.add(refuel);
+
+        refuel = new Refuel(15.0, 19.9, 8.6);
 
         refuels.add(refuel);
 
@@ -100,10 +104,6 @@ public class MainActivity extends AppCompatActivity {
             
 
         }
-
-        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
-        initTabs(tabHost);
-
         logoutButton = (Button) findViewById(R.id.logoutButton);
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -117,30 +117,6 @@ public class MainActivity extends AppCompatActivity {
         addButton = (Button) findViewById(R.id.addButton);
         handleAddButton(addButton);
     }
-
-    /**
-     * Initializes tabs and their content
-     * @param tabHost
-     */
-    private static void initTabs(TabHost tabHost) {
-        tabHost.setup();
-
-        TabHost.TabSpec spec = tabHost.newTabSpec("Single");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Single");
-        tabHost.addTab(spec);
-
-        spec = tabHost.newTabSpec("Month");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Month");
-        tabHost.addTab(spec);
-
-        spec = tabHost.newTabSpec("Year");
-        spec.setContent(R.id.tab3);
-        spec.setIndicator("Year");
-        tabHost.addTab(spec);
-    }
-
     /**
      * Handles onclick for specific button
      * @param addButton
