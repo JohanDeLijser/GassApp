@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import es.dmoral.toasty.Toasty;
-import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.databinding.ActivityRegisterBinding;
 import nl.gassapp.gassapp.viewmodels.RegisterViewModel;
@@ -33,8 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
 
         setupListeners();
-
-        setContentView(R.layout.activity_register);
     }
 
     private void setupListeners() {
