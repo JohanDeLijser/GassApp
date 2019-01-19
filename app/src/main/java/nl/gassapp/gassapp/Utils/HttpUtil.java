@@ -177,9 +177,9 @@ public class HttpUtil {
 
                     try {
 
-                        JSONObject user = response.getJSONObject("data");
+                        JSONObject jUser = response.getJSONObject("data");
 
-                        listener.getResult(user);
+                        listener.getResult(jUser);
 
                     } catch (JSONException e) {
 

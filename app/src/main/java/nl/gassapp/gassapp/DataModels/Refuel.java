@@ -70,6 +70,12 @@ public class Refuel {
         return df2.format(getPrice() / getKilometers());
     }
 
+    public String getLitersPerKilometers() {
+        df2.setRoundingMode(RoundingMode.UP);
+        return df2.format(getLiters() / getKilometers());
+    }
+
+
     public JSONObject toJSON(){
 
         JSONObject jsonObject= new JSONObject();
