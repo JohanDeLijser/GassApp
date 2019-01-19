@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loginButton = (Button)findViewById(R.id.loginButton);
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
@@ -48,7 +47,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoading(Boolean loading) {
 
-        loginButton.setEnabled(loading);
+        if (loginButton == null) {
+
+            loginButton = findViewById(R.id.loginButton);
+
+        }
+
+        loginButton.setEnabled(!loading);
 
     }
 
