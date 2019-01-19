@@ -41,19 +41,16 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.kilometers.setText(String.valueOf(refuels.get(position).getKilometers()));
-        holder.price.setText(String.valueOf(refuels.get(position).getPrice()));
-        holder.button.setOnClickListener(new View.OnClickListener() {
+        Refuel refuel = refuels.get(position);
 
-            @Override
-            public void onClick(View view) {
-                Intent refuelDetailIntent = new Intent(view.getContext(), RefuelDetailActivity.class);
-                Bundle params = new Bundle();
-                params.putInt("position", position);
-                refuelDetailIntent.putExtras(params);
-                context.startActivity(refuelDetailIntent);
-            }
-
+        holder.kilometers.setText(String.valueOf(refuel.getKilometers()));
+        holder.price.setText(String.valueOf(refuel.getPrice()));
+        holder.button.setOnClickListener((View view) -> {
+            Intent refuelDetailIntent = new Intent(view.getContext(), RefuelDetailActivity.class);
+            Bundle params = new Bundle();
+            params.putInt("position", position);
+            refuelDetailIntent.putExtras(params);
+            context.startActivity(refuelDetailIntent);
         });
 
     }
@@ -65,14 +62,14 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView kilometers;
         TextView price;
         LinearLayout listItemContainer;
         Button button;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             kilometers = itemView.findViewById(R.id.kilometers);
             price = itemView.findViewById(R.id.price);

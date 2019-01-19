@@ -8,11 +8,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Ref;
+import java.util.ArrayList;
+
+import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.R;
+import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class RefuelDetailActivity extends AppCompatActivity {
-
-    private Button backButton;
 
     private ImageView image;
     private TextView price;
@@ -29,8 +32,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refuel_detail);
 
-        backButton = (Button) findViewById(R.id.backButton);
-
         price = (TextView) findViewById(R.id.price);
         liters = (TextView) findViewById(R.id.liters);
         kilometers = (TextView) findViewById(R.id.kilometers);
@@ -38,13 +39,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         pricePKm = (TextView) findViewById(R.id.pricePKm);
 
         editRefuel = (Button) findViewById(R.id.editRefuel);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMainView();
-            }
-        });
 
         editRefuel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,16 +49,27 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
         Bundle revievedParams = getIntent().getExtras();
 
-        System.out.println(revievedParams.getInt("position"));
-    }
+        ArrayList<Refuel> refuels = SharedPreferencesUtil.getInstance().getRefuels();
 
-    private void openMainView() {
-        Intent mainViewIntent = new Intent(this, MainActivity.class);
-        startActivity(mainViewIntent);
+        Integer position = revievedParams.getInt("position");
+
+        Refuel refuel = refuels.get(position);
+
+
+        price.setText(Double.toString(refuel.getPrice()));
+
+        liters.setText(Double.toString(refuel.getLiters()));
+
+        kilometers.setText(Double.toString(refuel.getKilometers()));
+
+        litersPKm.setText(refuel.getLitersPerKilometers());
+        pricePKm.setText(refuel.getPricePerKilometer());
+
     }
 
     private void editRefuelView() {
         Intent editViewIntent = new Intent(this, EditRefuelActivity.class);
         startActivity(editViewIntent);
     }
+
 }
