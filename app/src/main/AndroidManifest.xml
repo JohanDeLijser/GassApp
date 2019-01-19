@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.MainActivity">
+        <activity android:name=".Views.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Views.AddRefuelActivity" />
-        <activity android:name=".Views.LoginActivity" />
+        <activity android:name=".Views.MainActivity" />
         <activity android:name=".Views.RefuelDetailActivity" />
         <activity android:name=".Views.EditRefuelActivity" />
         <activity android:name=".Views.RegisterActivity"></activity>

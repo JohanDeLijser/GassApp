@@ -52,7 +52,16 @@ public class LoginViewModel extends ViewModel {
 
             @Override
             public void getError(int errorCode) {
-                returnMessage.setValue(LOGIN_FALSE);
+                if (errorCode != 400) {
+
+                    returnMessage.setValue(LOGIN_ERROR);
+
+                } else {
+
+                    returnMessage.setValue(LOGIN_FALSE);
+
+                }
+
                 loadingState.setValue(false);
             }
         });

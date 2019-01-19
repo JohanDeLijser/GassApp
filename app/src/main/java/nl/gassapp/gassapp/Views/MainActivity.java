@@ -39,12 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Instance http util
-        HttpUtil.getInstance(this);
-
-        //Instance shared preferences util
-        SharedPreferencesUtil.getInstance(this);
-
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.refuelRecyclerView);
@@ -68,42 +62,7 @@ public class MainActivity extends AppCompatActivity {
         //Load the login when no user is loaded
         //TODO: validate if the token is still valid
 
-        final User user = SharedPreferencesUtil.getInstance().getUser();
 
-        if (user == null) {
-
-            openLoginActivity();
-
-        } else {
-
-          HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
-
-                @Override
-                public void getResult(User object) {
-
-                    if (!user.getEmail().equals(object.getEmail())) {
-
-                        SharedPreferencesUtil.getInstance().setUser(null);
-                        openLoginActivity();
-
-                    }
-
-                }
-
-                @Override
-                public void getError(int error) {
-
-                    SharedPreferencesUtil.getInstance().setUser(null);
-
-                    openLoginActivity();
-
-                }
-
-            });
-          
-            
-
-        }
         logoutButton = (Button) findViewById(R.id.logoutButton);
 
         logoutButton.setOnClickListener(new View.OnClickListener() {

@@ -9,7 +9,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import es.dmoral.toasty.Toasty;
+import nl.gassapp.gassapp.DataModels.User;
+import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
+import nl.gassapp.gassapp.Utils.HttpUtil;
+import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 import nl.gassapp.gassapp.viewmodels.LoginViewModel;
 import nl.gassapp.gassapp.databinding.ActivityLoginBinding;
 
@@ -22,6 +26,52 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Instance http util
+        HttpUtil.getInstance(this);
+
+        //Instance shared preferences util
+        SharedPreferencesUtil.getInstance(this);
+
+        final User user = SharedPreferencesUtil.getInstance().getUser();
+
+        if (user != null) {
+
+            HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
+
+                @Override
+                public void getResult(User object) {
+
+                    if (user.getEmail().equals(object.getEmail())) {
+
+                        openMainActivity();
+
+                    } else {
+
+                        SharedPreferencesUtil.getInstance().setUser(null);
+
+                    }
+
+                }
+
+                @Override
+                public void getError(int error) {
+
+                    /*
+
+                        TODO: Report error. If it is a network error
+
+                     */
+
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    openMainActivity();
+
+                }
+
+            });
+
+        }
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
@@ -44,9 +94,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (message == LoginViewModel.LOGIN_OK) {
 
+            String firstName = SharedPreferencesUtil.getInstance().getUser().getFirstname();
+
             Toasty.success(
                     this,
-                    "Succesvol ingelogd",
+                    "Welcome " + firstName,
                     Toast.LENGTH_SHORT,
                     true)
                     .show();
@@ -57,7 +109,16 @@ public class LoginActivity extends AppCompatActivity {
 
             Toasty.error(
                     this,
-                    "Email of Wachtwoord onjuist",
+                    "Email or password is incorrect",
+                    Toast.LENGTH_SHORT,
+                    true)
+                    .show();
+
+        } else {
+
+            Toasty.error(
+                    this,
+                    "Network error",
                     Toast.LENGTH_SHORT,
                     true)
                     .show();
