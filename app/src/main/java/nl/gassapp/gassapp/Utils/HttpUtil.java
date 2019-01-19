@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -198,13 +199,35 @@ public class HttpUtil {
 
             }
         }, listener);
-
     }
 
-    /*
+    public void getRefuels(final User user, final RequestResponseListener<JSONObject> listener)
+    {
 
-        TODO: CRUD Refuel requests
+        String url = API_URL + "/refuel/get";
 
-     */
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("authentication", user.getToken());
+
+        this.request(Request.Method.GET, url, headers, new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                if(response != null) {
+
+                    listener.getResult(response);
+
+                } else {
+
+                    listener.getError(0);
+
+                }
+
+            }
+        }, listener);
+    }
 
 }

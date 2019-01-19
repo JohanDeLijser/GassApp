@@ -6,13 +6,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
+import nl.gassapp.gassapp.DataModel.Refuel;
 import nl.gassapp.gassapp.DataModel.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
+import nl.gassapp.gassapp.ViewModel.RefuelViewModal;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private Button showImageAndLocationButton;
     private Button editButton;
     private Button deleteButton;
+    private final RefuelViewModal refuelViewModal = new RefuelViewModal();
+    private ArrayList<Refuel> allRefuels;
 
-    private Button showMonthGraphButton;
-    private Button showYearGraphButton;
+    private LinearLayout singleRefuelContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
+          HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
 
                 @Override
                 public void getResult(User object) {
@@ -78,6 +90,27 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             });
+          
+          
+            refuelViewModal.getTrips(
+                            new RequestResponseListener<Boolean>() {
+
+                                @Override
+                                public void getResult(Boolean bool) {
+                                    if (bool) {
+                                        setSingleRefuelFields(refuelViewModal.getAllTrips());
+                                    }
+                                }
+
+                                @Override
+                                public void getError(int errorCode) {
+                                    System.out.println(errorCode);
+                                }
+
+                            }
+                    );
+          
+            
 
         }
 
@@ -98,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         handleAddButton(addButton);
 
 
+        //Single tab
         showImageAndLocationButton = (Button) findViewById(R.id.showImageAndLocationButton);
         handleShowImageAndLocationButton(showImageAndLocationButton);
 
@@ -106,12 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
         deleteButton = (Button) findViewById(R.id.deleteButton);
         handleDeleteButton(deleteButton);
-
-        showMonthGraphButton = (Button) findViewById(R.id.showMonthGraphButton);
-        handleShowMonthGraphButton(showMonthGraphButton);
-
-        showYearGraphButton = (Button) findViewById(R.id.showYearGraphButton);
-        handleYearGraphButton(showYearGraphButton);
     }
 
     /**
@@ -171,33 +199,6 @@ public class MainActivity extends AppCompatActivity {
     private void handleDeleteButton(Button deleteButton) {
 
     }
-
-    /**
-     * Handles onclick for specific button
-     * @param showMonthGraphButton
-     */
-    private void handleShowMonthGraphButton(Button showMonthGraphButton) {
-        showMonthGraphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMonthGraphActivity();
-            }
-        });
-    }
-
-    /**
-     * Handles onclick for specific button
-     * @param showYearGraphButton
-     */
-    private void handleYearGraphButton(Button showYearGraphButton) {
-        showYearGraphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openYearGraphActivity();
-            }
-        });
-    }
-
     /**
      * Opens the login screen
      */
@@ -233,20 +234,72 @@ public class MainActivity extends AppCompatActivity {
         startActivity(editIntent);
     }
 
-    /**
-     * Opens the month graph activity
-     */
-    private void openMonthGraphActivity() {
-        Intent graphIntent = new Intent(this, GraphActivity.class);
-        startActivity(graphIntent);
+    private void setSingleRefuelFields(ArrayList<Refuel> refuels) {
+        singleRefuelContent = (LinearLayout) findViewById(R.id.singleRefuelContent);
+
+        if (!refuels.isEmpty()) {
+
+            for (Refuel refuel : refuels) {
+
+                // init all layouts and fields
+                LinearLayout refuelLayout = new LinearLayout(this);
+
+                LinearLayout litersRow = new LinearLayout(this);
+                litersRow.setOrientation(LinearLayout.HORIZONTAL);
+                TextView refuelLitersTitle = new TextView(this);
+                TextView refuelLiters = new TextView(this);
+
+                LinearLayout priceRow = new LinearLayout(this);
+                priceRow.setOrientation(LinearLayout.HORIZONTAL);
+                TextView refuelPriceTitle = new TextView(this);
+                TextView refuelPrice = new TextView(this);
+
+                LinearLayout kilometersRow = new LinearLayout(this);
+                kilometersRow.setOrientation(LinearLayout.HORIZONTAL);
+                TextView refuelKilometersTitle = new TextView(this);
+                TextView refuelKilometers = new TextView(this);
+
+                LinearLayout priceKmRow = new LinearLayout(this);
+                priceKmRow.setOrientation(LinearLayout.HORIZONTAL);
+                TextView refuelPriceKmTitle = new TextView(this);
+                TextView refuelPriceKm = new TextView(this);
+
+                // set values of above initialized fields
+                refuelLitersTitle.setText("Liters: ");
+                refuelPriceTitle.setText("Price: ");
+                refuelKilometersTitle.setText("Kilometers: ");
+                refuelPriceKmTitle.setText("Price p/km: ");
+
+                refuelLiters.setText(refuel.getLiters().toString() + "L");
+                refuelPrice.setText("€" + refuel.getPrice().toString());
+                refuelKilometers.setText(refuel.getKilometers().toString() + "km");
+                refuelPriceKmTitle.setText("€" + refuel.getPricePerKilometer());
+
+                litersRow.addView(refuelLitersTitle);
+                litersRow.addView(refuelLiters);
+
+                priceRow.addView(refuelPriceTitle);
+                priceRow.addView(refuelPrice);
+
+                kilometersRow.addView(refuelKilometersTitle);
+                kilometersRow.addView(refuelKilometers);
+
+                priceKmRow.addView(refuelPriceKmTitle);
+                priceKmRow.addView(refuelPriceKm);
+
+                refuelLayout.setOrientation(LinearLayout.VERTICAL);
+
+                refuelLayout.addView(litersRow);
+                refuelLayout.addView(priceRow);
+                refuelLayout.addView(kilometersRow);
+                refuelLayout.addView(priceKmRow);
+
+                singleRefuelContent.addView(refuelLayout);
+            }
+        }
     }
 
-    /**
-     * Opens the year graph activity
-     */
-    private void openYearGraphActivity() {
-        Intent graphIntent = new Intent(this, GraphActivity.class);
-        startActivity(graphIntent);
-    }
+    private void setMonthRefuelFields(ArrayList<Refuel> refuels) {
 
+    }
 }

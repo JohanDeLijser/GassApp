@@ -11,6 +11,9 @@ public class LoginViewModal {
 
     public void loginUser(String email, String password, final RequestResponseListener<Boolean> listener) {
 
+        System.out.println(email);
+        System.out.println(password);
+
         User loginUser = new User(email, password);
 
         HttpUtil.getInstance().authenticateUser(loginUser, new RequestResponseListener<User>() {
@@ -18,6 +21,8 @@ public class LoginViewModal {
             public void getResult(User object) {
                 applicationUser = object;
                 SharedPreferencesUtil.getInstance().setUser(applicationUser);
+
+                System.out.println(applicationUser.getFirstname());
 
                 listener.getResult(true);
             }
