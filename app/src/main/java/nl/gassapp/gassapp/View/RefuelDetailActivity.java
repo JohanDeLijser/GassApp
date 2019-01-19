@@ -48,6 +48,13 @@ public class RefuelDetailActivity extends AppCompatActivity {
             }
         });
 
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddView();
+            }
+        });
+
         editRefuel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +70,11 @@ public class RefuelDetailActivity extends AppCompatActivity {
     private void openMainView() {
         Intent mainViewIntent = new Intent(this, MainActivity.class);
         startActivity(mainViewIntent);
+    }
+
+    private void openAddView() {
+        Intent addViewIntent = new Intent(this, AddRefuelActivity.class);
+        startActivity(addViewIntent);
     }
 
     private void editRefuelView() {
