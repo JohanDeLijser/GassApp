@@ -1,6 +1,7 @@
 package nl.gassapp.gassapp.Views;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Button logoutButton;
-    private Button addButton;
+    private FloatingActionButton addButton;
 
     private final AddRefuelViewModal addRefuelViewModal = new AddRefuelViewModal();
     private ArrayList<Refuel> allRefuels;
@@ -73,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        addButton = (Button) findViewById(R.id.addButton);
+        addButton = findViewById(R.id.addButton);
         handleAddButton(addButton);
     }
     /**
      * Handles onclick for specific button
      * @param addButton
      */
-    private void handleAddButton(Button addButton) {
+    private void handleAddButton(FloatingActionButton addButton) {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

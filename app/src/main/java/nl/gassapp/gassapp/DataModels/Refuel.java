@@ -13,8 +13,7 @@ public class Refuel {
     private Double kilometers;
 
     private String picturePath;
-    private String latitude;
-    private String longitude;
+
     private static DecimalFormat df2 = new DecimalFormat(".##");
 
 
