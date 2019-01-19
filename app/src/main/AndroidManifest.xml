@@ -28,7 +28,8 @@
         <activity android:name=".Views.AddRefuelActivity" />
         <activity android:name=".Views.LoginActivity" />
         <activity android:name=".Views.RefuelDetailActivity" />
-        <activity android:name=".Views.EditRefuelActivity"></activity>
+        <activity android:name=".Views.EditRefuelActivity" />
+        <activity android:name=".Views.RegisterActivity"></activity>
     </application>
 
 </manifest>
