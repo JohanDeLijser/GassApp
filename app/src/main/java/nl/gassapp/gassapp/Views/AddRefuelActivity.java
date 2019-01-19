@@ -1,4 +1,4 @@
-package nl.gassapp.gassapp.View;
+package nl.gassapp.gassapp.Views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

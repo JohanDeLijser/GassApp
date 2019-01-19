@@ -1,12 +1,12 @@
-package nl.gassapp.gassapp.ViewModel;
+package nl.gassapp.gassapp.viewmodels;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.gassapp.gassapp.DataModel.Refuel;
-import nl.gassapp.gassapp.DataModel.User;
+import nl.gassapp.gassapp.DataModels.Refuel;
+import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;

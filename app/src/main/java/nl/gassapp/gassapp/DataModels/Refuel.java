@@ -1,4 +1,4 @@
-package nl.gassapp.gassapp.DataModel;
+package nl.gassapp.gassapp.DataModels;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -5,13 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.gassapp.gassapp.DataModel.Refuel;
+import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.R;
 
 public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.ViewHolder> {

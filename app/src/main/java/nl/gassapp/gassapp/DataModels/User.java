@@ -1,4 +1,6 @@
-package nl.gassapp.gassapp.DataModel;
+package nl.gassapp.gassapp.DataModels;
+
+import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +12,9 @@ public class User {
     private String token;
     private String firstname;
     private String lastname;
+
+    public User() {
+    }
 
     public User(JSONObject object) {
 
@@ -25,13 +30,6 @@ public class User {
             //no code
 
         }
-
-    }
-
-    public User(String email, String password) {
-
-        this.email = email;
-        this.password = password;
 
     }
 
@@ -62,6 +60,14 @@ public class User {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setEmail(@NonNull String email) {
+        this.email = email;
+    }
+
+    public void setPassword(@NonNull String password) {
+        this.password = password;
     }
 
     public String toJSON(){

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import nl.gassapp.gassapp.DataModel.User;
+import nl.gassapp.gassapp.DataModels.User;
 
 public class SharedPreferencesUtil {
 

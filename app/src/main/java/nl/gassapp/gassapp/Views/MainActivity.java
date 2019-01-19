@@ -1,4 +1,4 @@
-package nl.gassapp.gassapp.View;
+package nl.gassapp.gassapp.Views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +13,13 @@ import android.widget.TabHost;
 import java.util.ArrayList;
 
 import nl.gassapp.gassapp.Adapters.RefuelListAdapter;
-import nl.gassapp.gassapp.DataModel.Refuel;
-import nl.gassapp.gassapp.DataModel.User;
+import nl.gassapp.gassapp.DataModels.Refuel;
+import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.ViewModel.AddRefuelViewModal;
+import nl.gassapp.gassapp.viewmodels.AddRefuelViewModal;
 
 
 public class MainActivity extends AppCompatActivity {
