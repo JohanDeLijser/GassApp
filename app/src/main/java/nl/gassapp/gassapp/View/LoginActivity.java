@@ -7,12 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.Response;
-
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.ViewModel.LoginViewModal;
-import nl.gassapp.gassapp.ViewModel.RefuelViewModal;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -64,6 +61,9 @@ public class LoginActivity extends AppCompatActivity {
                                     openMainActivity();
 
                                 }
+
+                                loginButton.setEnabled(true);
+
                             }
 
                             @Override

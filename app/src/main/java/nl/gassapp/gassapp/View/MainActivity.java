@@ -1,23 +1,14 @@
 package nl.gassapp.gassapp.View;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
-import android.widget.TableRow;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -28,22 +19,18 @@ import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.ViewModel.RefuelViewModal;
+import nl.gassapp.gassapp.ViewModel.AddRefuelViewModal;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Button logoutButton;
     private Button addButton;
 
-    private Button showImageAndLocationButton;
-    private Button editButton;
-    private Button deleteButton;
-    private final RefuelViewModal refuelViewModal = new RefuelViewModal();
+    private final AddRefuelViewModal addRefuelViewModal = new AddRefuelViewModal();
     private ArrayList<Refuel> allRefuels;
 
     private LinearLayout singleRefuelContent;
@@ -54,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Instance http util
         HttpUtil.getInstance(this);
+
+        //Instance shared preferences util
         SharedPreferencesUtil.getInstance(this);
 
         setContentView(R.layout.activity_main);
@@ -71,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-
 
         //Load the login when no user is loaded
         //TODO: validate if the token is still valid
@@ -130,17 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
         addButton = (Button) findViewById(R.id.addButton);
         handleAddButton(addButton);
-
-
-        //Single tab
-        showImageAndLocationButton = (Button) findViewById(R.id.showImageAndLocationButton);
-        handleShowImageAndLocationButton(showImageAndLocationButton);
-
-        editButton = (Button) findViewById(R.id.editButton);
-        handleEditButton(editButton);
-
-        deleteButton = (Button) findViewById(R.id.deleteButton);
-        handleDeleteButton(deleteButton);
     }
 
     /**
@@ -179,27 +154,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void handleShowImageAndLocationButton(Button showImageAndLocationButton) {
-        showImageAndLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImageAndLocationActivity();
-            }
-        });
-    }
-
-    private void handleEditButton(Button editButton) {
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEditActivity();
-            }
-        });
-    }
-
-    private void handleDeleteButton(Button deleteButton) {
-
-    }
     /**
      * Opens the login screen
      */
@@ -219,88 +173,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(addRefuelIntent);
     }
 
-    /**
-     * Opens the image and location activity
-     */
-    private void openImageAndLocationActivity() {
-        Intent imageAndLoctionIntent = new Intent(this, ImageAndLocationActivity.class);
-        startActivity(imageAndLoctionIntent);
-    }
-
-    /**
-     * Opens the image and location activity
-     */
-    private void openEditActivity() {
-        Intent editIntent = new Intent(this, EditRefuelActivity.class);
-        startActivity(editIntent);
-    }
-
-    private void setSingleRefuelFields(ArrayList<Refuel> refuels) {
-        singleRefuelContent = (LinearLayout) findViewById(R.id.singleRefuelContent);
-
-        if (!refuels.isEmpty()) {
-
-            for (Refuel refuel : refuels) {
-
-                // init all layouts and fields
-                LinearLayout refuelLayout = new LinearLayout(this);
-
-                LinearLayout litersRow = new LinearLayout(this);
-                litersRow.setOrientation(LinearLayout.HORIZONTAL);
-                TextView refuelLitersTitle = new TextView(this);
-                TextView refuelLiters = new TextView(this);
-
-                LinearLayout priceRow = new LinearLayout(this);
-                priceRow.setOrientation(LinearLayout.HORIZONTAL);
-                TextView refuelPriceTitle = new TextView(this);
-                TextView refuelPrice = new TextView(this);
-
-                LinearLayout kilometersRow = new LinearLayout(this);
-                kilometersRow.setOrientation(LinearLayout.HORIZONTAL);
-                TextView refuelKilometersTitle = new TextView(this);
-                TextView refuelKilometers = new TextView(this);
-
-                LinearLayout priceKmRow = new LinearLayout(this);
-                priceKmRow.setOrientation(LinearLayout.HORIZONTAL);
-                TextView refuelPriceKmTitle = new TextView(this);
-                TextView refuelPriceKm = new TextView(this);
-
-                // set values of above initialized fields
-                refuelLitersTitle.setText("Liters: ");
-                refuelPriceTitle.setText("Price: ");
-                refuelKilometersTitle.setText("Kilometers: ");
-                refuelPriceKmTitle.setText("Price p/km: ");
-
-                refuelLiters.setText(refuel.getLiters().toString() + "L");
-                refuelPrice.setText("€" + refuel.getPrice().toString());
-                refuelKilometers.setText(refuel.getKilometers().toString() + "km");
-                refuelPriceKmTitle.setText("€" + refuel.getPricePerKilometer());
-
-                litersRow.addView(refuelLitersTitle);
-                litersRow.addView(refuelLiters);
-
-                priceRow.addView(refuelPriceTitle);
-                priceRow.addView(refuelPrice);
-
-                kilometersRow.addView(refuelKilometersTitle);
-                kilometersRow.addView(refuelKilometers);
-
-                priceKmRow.addView(refuelPriceKmTitle);
-                priceKmRow.addView(refuelPriceKm);
-
-                refuelLayout.setOrientation(LinearLayout.VERTICAL);
-
-                refuelLayout.addView(litersRow);
-                refuelLayout.addView(priceRow);
-                refuelLayout.addView(kilometersRow);
-                refuelLayout.addView(priceKmRow);
-
-                singleRefuelContent.addView(refuelLayout);
-            }
-        }
-    }
-
-    private void setMonthRefuelFields(ArrayList<Refuel> refuels) {
-
-    }
 }

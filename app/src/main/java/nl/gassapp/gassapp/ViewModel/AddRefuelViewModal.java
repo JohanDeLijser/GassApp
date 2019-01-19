@@ -11,7 +11,7 @@ import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
-public class RefuelViewModal {
+public class AddRefuelViewModal {
 
     private User applicationUser;
     private ArrayList<Refuel> refuels = new ArrayList<Refuel>();
