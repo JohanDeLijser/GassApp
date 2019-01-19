@@ -9,14 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import nl.gassapp.gassapp.R;
-import nl.gassapp.gassapp.Views.AddRefuelActivity;
-import nl.gassapp.gassapp.Views.EditRefuelActivity;
-import nl.gassapp.gassapp.Views.MainActivity;
 
 public class RefuelDetailActivity extends AppCompatActivity {
 
     private Button backButton;
-    private Button addButton;
 
     private ImageView image;
     private TextView price;
@@ -34,7 +30,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refuel_detail);
 
         backButton = (Button) findViewById(R.id.backButton);
-        addButton = (Button) findViewById(R.id.addButton);
 
         price = (TextView) findViewById(R.id.price);
         liters = (TextView) findViewById(R.id.liters);
@@ -48,13 +43,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openMainView();
-            }
-        });
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAddView();
             }
         });
 
@@ -73,11 +61,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
     private void openMainView() {
         Intent mainViewIntent = new Intent(this, MainActivity.class);
         startActivity(mainViewIntent);
-    }
-
-    private void openAddView() {
-        Intent addViewIntent = new Intent(this, AddRefuelActivity.class);
-        startActivity(addViewIntent);
     }
 
     private void editRefuelView() {
