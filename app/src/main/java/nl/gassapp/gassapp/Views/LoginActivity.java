@@ -6,7 +6,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.Toast;
 
+import es.dmoral.toasty.Toasty;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.viewmodels.LoginViewModel;
 import nl.gassapp.gassapp.databinding.ActivityLoginBinding;
@@ -20,7 +22,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
@@ -39,9 +40,29 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void onResponseMessage(String message) {
+    private void onResponseMessage(Integer message) {
 
-        System.out.println(message);
+        if (message == LoginViewModel.LOGIN_OK) {
+
+            Toasty.success(
+                    this,
+                    "Succesvol ingelogd",
+                    Toast.LENGTH_SHORT,
+                    true)
+                    .show();
+
+            openMainActivity();
+
+        } else if (message == LoginViewModel.LOGIN_FALSE) {
+
+            Toasty.error(
+                    this,
+                    "Email of Wachtwoord onjuist",
+                    Toast.LENGTH_SHORT,
+                    true)
+                    .show();
+
+        }
 
     }
 

@@ -10,9 +10,13 @@ import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class LoginViewModel extends ViewModel {
 
+    public static final int LOGIN_OK = 0;
+    public static final int LOGIN_FALSE = 1;
+    public static final int LOGIN_ERROR = 2;
+
     private User user;
 
-    private MutableLiveData<String> returnMessage = new MutableLiveData<>();
+    private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public LoginViewModel() {
@@ -42,20 +46,20 @@ public class LoginViewModel extends ViewModel {
             public void getResult(User object) {
                 user = object;
                 SharedPreferencesUtil.getInstance().setUser(user);
-                returnMessage.setValue("good");
+                returnMessage.setValue(LOGIN_OK);
                 loadingState.setValue(false);
             }
 
             @Override
             public void getError(int errorCode) {
-                returnMessage.setValue("false");
+                returnMessage.setValue(LOGIN_FALSE);
                 loadingState.setValue(false);
             }
         });
 
     }
 
-    public MutableLiveData<String> getReturnMessage() {
+    public MutableLiveData<Integer> getReturnMessage() {
 
         return this.returnMessage;
 
