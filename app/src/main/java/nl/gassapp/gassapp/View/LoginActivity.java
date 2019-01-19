@@ -56,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void getResult(Boolean bool) {
+
+                                System.out.println(bool);
+
                                 if (bool) {
 
                                     openMainActivity();
