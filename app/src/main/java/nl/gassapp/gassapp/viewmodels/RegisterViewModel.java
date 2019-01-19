@@ -3,10 +3,12 @@ package nl.gassapp.gassapp.viewmodels;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
-import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class RegisterViewModel extends ViewModel {
 
@@ -24,7 +26,10 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void afterEmailTextChanged(CharSequence s) {
-        user.setEmail(s.toString());
+
+        if (s.toString().contains("@")) {
+            user.setEmail(s.toString());
+        }
     }
 
     public void afterFirstnameTextChanged(CharSequence s) {
@@ -40,13 +45,11 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void onRegisterClicked() {
-
         this.loadingState.setValue(true);
 
-        HttpUtil.getInstance().registerUser(user, new RequestResponseListener<User>() {
+        HttpUtil.getInstance().registerUser(user, new RequestResponseListener<JSONObject>() {
             @Override
-            public void getResult(User object) {
-                SharedPreferencesUtil.getInstance().setUser(user);
+            public void getResult(JSONObject object) {
                 returnMessage.setValue(REGISTER_OK);
                 loadingState.setValue(false);
             }

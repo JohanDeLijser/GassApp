@@ -44,14 +44,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void onResponseMessage(Integer message) {
 
         if (message == RegisterViewModel.REGISTER_OK) {
-
             Toasty.success(this, "Successfully registered! You can now log in!", Toast.LENGTH_SHORT, true).show();
             openLoginActivity();
 
         } else if (message == RegisterViewModel.REGISTER_FALSE) {
-            Toasty.error(this, "Something went wrong while registering", Toast.LENGTH_SHORT, true).show();
+            Toasty.error(this, "Something went wrong while registering, either this e-mail is already taken, or some of the other fields aren't filled in correctly", Toast.LENGTH_LONG, true).show();
         } else {
-            Toasty.error(this, "Network error", Toast.LENGTH_SHORT, true).show();
+            Toasty.error(this, "Network error, something went wrong", Toast.LENGTH_SHORT, true).show();
         }
     }
 

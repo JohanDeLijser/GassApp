@@ -161,7 +161,7 @@ public class HttpUtil {
 
     }
 
-    public void registerUser(User user, final RequestResponseListener<User> listener)
+    public void registerUser(User user, final RequestResponseListener<JSONObject> listener)
     {
 
         String url = API_URL + "/user/create";
@@ -186,11 +186,9 @@ public class HttpUtil {
 
                     try {
 
-                        JSONObject data = response.getJSONObject("data");
+                        JSONObject user = response.getJSONObject("data");
 
-                        User responseUser = new User(data);
-
-                        listener.getResult(responseUser);
+                        listener.getResult(user);
 
                     } catch (JSONException e) {
 
