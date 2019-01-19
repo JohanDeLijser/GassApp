@@ -35,26 +35,30 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="E-mail"/>
+                android:hint="E-mail"
+                android:afterTextChanged="@{(editable)->viewModel.afterEmailTextChanged(editable)}"/>
 
             <EditText
                 android:id="@+id/firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Firstname"/>
+                android:hint="Firstname"
+                android:afterTextChanged="@{(editable)->viewModel.afterFirstnameTextChanged(editable)}"/>
 
             <EditText
                 android:id="@+id/lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Lastname"/>
+                android:hint="Lastname"
+                android:afterTextChanged="@{(editable)->viewModel.afterLastnameTextChanged(editable)}"/>
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:hint="Password"
+                android:afterTextChanged="@{(editable)->viewModel.afterPasswordTextChanged(editable)}"/>
 
             <Button
                 android:id="@+id/registerButton"
