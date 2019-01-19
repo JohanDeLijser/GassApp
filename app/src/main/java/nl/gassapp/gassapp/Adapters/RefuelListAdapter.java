@@ -1,11 +1,15 @@
 package nl.gassapp.gassapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,6 +17,7 @@ import java.util.ArrayList;
 
 import nl.gassapp.gassapp.DataModel.Refuel;
 import nl.gassapp.gassapp.R;
+import nl.gassapp.gassapp.View.RefuelDetailActivity;
 
 public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.ViewHolder> {
 
@@ -40,12 +45,15 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
 
         holder.kilometers.setText(String.valueOf(refuels.get(position).getKilometers()));
         holder.price.setText(String.valueOf(refuels.get(position).getPrice()));
-
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                System.out.println(position);
+                Intent refuelDetailIntent = new Intent(view.getContext(), RefuelDetailActivity.class);
+                Bundle params = new Bundle();
+                params.putInt("position", position);
+                refuelDetailIntent.putExtras(params);
+                context.startActivity(refuelDetailIntent);
             }
 
         });
@@ -63,13 +71,15 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
 
         TextView kilometers;
         TextView price;
-        RelativeLayout relativeLayout;
+        LinearLayout listItemContainer;
+        Button button;
 
         public ViewHolder(View itemView) {
             super(itemView);
             kilometers = itemView.findViewById(R.id.kilometers);
             price = itemView.findViewById(R.id.price);
-            relativeLayout = itemView.findViewById(R.id.list_item_container);
+            listItemContainer = itemView.findViewById(R.id.list_item_container);
+            button = itemView.findViewById(R.id.viewRefuel);
 
         }
 
