@@ -8,6 +8,8 @@ import java.text.DecimalFormat;
 
 public class Refuel {
 
+    private Integer id;
+
     private Double liters;
     private Double price;
     private Double kilometers;
@@ -21,15 +23,11 @@ public class Refuel {
 
         try {
 
-            this.liters = object.getDouble("liters");
-            this.price = object.getDouble("price");
-            this.kilometers = object.getDouble("kilometers");
-
-            if (!object.getString("picturePath").equals("")) {
-
-                this.picturePath = object.getString("picturePath");
-
-            }
+            this.id = object.getInt("_id");
+            this.liters = Double.parseDouble(object.getString("liters"));
+            this.price = Double.parseDouble(object.getString("price"));
+            this.kilometers =  Double.parseDouble(object.getString("kilometers"));
+            this.picturePath = object.getString("picturePath");
 
         } catch (JSONException e) {
 
@@ -47,6 +45,10 @@ public class Refuel {
 
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public Double getLiters() {
         return liters;
     }
@@ -59,8 +61,31 @@ public class Refuel {
         return kilometers;
     }
 
+    public String getPicturePath() {
+        return picturePath;
+    }
+
     public String getPricePerKilometer() {
         df2.setRoundingMode(RoundingMode.UP);
         return df2.format(getPrice() / getKilometers());
     }
+
+    public JSONObject toJSON(){
+
+        JSONObject jsonObject= new JSONObject();
+
+        try {
+            jsonObject.put("_id", getId());
+            jsonObject.put("liters", getLiters());
+            jsonObject.put("price", getPrice());
+            jsonObject.put("kilometers", getKilometers());
+            jsonObject.put("picturePath", getPicturePath());
+
+            return jsonObject;
+        } catch (JSONException e) {
+            return jsonObject;
+        }
+
+    }
+
 }

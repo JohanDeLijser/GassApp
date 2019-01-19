@@ -13,9 +13,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 
@@ -80,25 +82,21 @@ public class HttpUtil {
     ) {
 
         JsonObjectRequest request = new JsonObjectRequest(method, url, params,
-                okCallback,
-                new Response.ErrorListener()
+            okCallback,
+            (VolleyError error) ->
                 {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
+
+                    if (error.networkResponse != null)
                     {
 
-                        if (error.networkResponse != null)
-                        {
+                        listener.getError(error.networkResponse.statusCode);
 
-                            listener.getError(error.networkResponse.statusCode);
+                    } else {
 
-                        } else {
-
-                            listener.getError(0);
-
-                        }
+                        listener.getError(0);
 
                     }
+
                 }
         ) {
 
@@ -128,10 +126,7 @@ public class HttpUtil {
 
         JSONObject jsonParams = new JSONObject(params);
 
-        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
+        this.request(Request.Method.POST, url, jsonParams, headers, (JSONObject response) ->
             {
 
                 if(response != null) {
@@ -156,8 +151,7 @@ public class HttpUtil {
 
                 }
 
-            }
-        }, listener);
+            }, listener);
 
     }
 
@@ -176,10 +170,7 @@ public class HttpUtil {
 
         JSONObject jsonParams = new JSONObject(params);
 
-        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
+        this.request(Request.Method.POST, url, jsonParams, headers,(JSONObject response) ->
             {
 
                 if(response != null) {
@@ -204,8 +195,7 @@ public class HttpUtil {
 
                 }
 
-            }
-        }, listener);
+            }, listener);
 
     }
 
@@ -218,18 +208,15 @@ public class HttpUtil {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("authentication", user.getToken());
 
-        this.request(Request.Method.GET, url, headers, new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
+        this.request(Request.Method.GET, url, headers, (JSONObject response) ->
             {
 
                 if(response != null) {
 
                     try {
 
-                        User user = new User(response.getJSONObject("data"));
-                        listener.getResult(user);
+                        User rUser = new User(response.getJSONObject("data"));
+                        listener.getResult(rUser);
 
                     } catch (JSONException e) {
 
@@ -243,28 +230,44 @@ public class HttpUtil {
 
                 }
 
-            }
-        }, listener);
+            }, listener);
     }
 
-    public void getRefuels(final User user, final RequestResponseListener<JSONObject> listener)
+    public void getRefuels(final User user, final RequestResponseListener<ArrayList<Refuel>> listener)
     {
 
         String url = API_URL + "/refuel/get";
 
-
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("authentication", user.getToken());
 
-        this.request(Request.Method.GET, url, headers, new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
+        this.request(Request.Method.GET, url, headers, (JSONObject response) ->
             {
 
                 if(response != null) {
 
-                    listener.getResult(response);
+                    ArrayList<Refuel> refuels = new ArrayList<Refuel>();
+
+                    try {
+
+                        if (response.getJSONArray("data").length() > 0) {
+
+                            for (int i = 0; i < response.getJSONArray("data").length(); i++) {
+
+                                Refuel refuel = new Refuel(response.getJSONArray("data").getJSONObject(i));
+                                refuels.add(refuel);
+
+                            }
+
+                        }
+
+                    } catch (JSONException e) {
+
+                        //EXCEPTION TODO
+
+                    }
+
+                    listener.getResult(refuels);
 
                 } else {
 
@@ -272,8 +275,9 @@ public class HttpUtil {
 
                 }
 
-            }
-        }, listener);
+            },
+        listener);
+
     }
 
 }

@@ -10,31 +10,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-
 import java.util.ArrayList;
 
 import nl.gassapp.gassapp.Adapters.RefuelListAdapter;
 import nl.gassapp.gassapp.DataModels.Refuel;
-import nl.gassapp.gassapp.DataModels.User;
-import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
-import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.viewmodels.AddRefuelViewModal;
-
+import nl.gassapp.gassapp.viewmodels.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private Button logoutButton;
     private FloatingActionButton addButton;
 
-    private final AddRefuelViewModal addRefuelViewModal = new AddRefuelViewModal();
-    private ArrayList<Refuel> allRefuels;
+    private MainViewModel mainViewModel;
 
-    private LinearLayout singleRefuelContent;
+    private RefuelListAdapter refuelListAdapter;
+
+    private ArrayList<Refuel> allRefuels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,27 +35,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.refuelRecyclerView);
+        mainViewModel = new MainViewModel();
 
-        ArrayList<Refuel> refuels = new ArrayList<>();
+        this.allRefuels = SharedPreferencesUtil.getInstance().getRefuels();
 
-        Refuel refuel = new Refuel(12.0, 19.8, 8.6);
+        initListeners();
+        initRecyclerView();
 
-        refuels.add(refuel);
-
-        refuel = new Refuel(15.0, 19.9, 8.6);
-
-        refuels.add(refuel);
-
-        RefuelListAdapter refuelListAdapter = new RefuelListAdapter(this, refuels);
-        mRecyclerView.setAdapter(refuelListAdapter);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        //Load the login when no user is loaded
-        //TODO: validate if the token is still valid
-
+        mainViewModel.fetchRefuels();
 
         logoutButton = (Button) findViewById(R.id.logoutButton);
 
@@ -77,6 +57,33 @@ public class MainActivity extends AppCompatActivity {
         addButton = findViewById(R.id.addButton);
         handleAddButton(addButton);
     }
+
+    private void initRecyclerView() {
+
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.refuelRecyclerView);
+
+        refuelListAdapter = new RefuelListAdapter(this, allRefuels);
+        mRecyclerView.setAdapter(refuelListAdapter);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+    }
+
+    private void initListeners() {
+
+        mainViewModel.getRefuels().observe(this, this::updateRefuelObject);
+
+    }
+
+    private void updateRefuelObject(ArrayList<Refuel> refuels) {
+
+        allRefuels.clear();
+        allRefuels.addAll(refuels);
+        refuelListAdapter.notifyDataSetChanged();
+
+    }
+
     /**
      * Handles onclick for specific button
      * @param addButton

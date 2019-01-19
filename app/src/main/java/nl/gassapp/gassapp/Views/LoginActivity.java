@@ -68,8 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     SharedPreferencesUtil.getInstance().setUser(null);
 
-                    openMainActivity();
-
                 }
 
             });

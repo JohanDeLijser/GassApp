@@ -3,12 +3,19 @@ package nl.gassapp.gassapp.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 
 public class SharedPreferencesUtil {
+
+    private static final String USER_KEY = "user";
+    private static final String REFUELS_KEY = "refuels";
 
     private SharedPreferences sharedPreferences;
 
@@ -66,7 +73,7 @@ public class SharedPreferencesUtil {
 
     public User getUser() {
 
-        String user = this.getItem("user");
+        String user = this.getItem(USER_KEY);
 
         if (user.equals("{}")) {
 
@@ -93,13 +100,59 @@ public class SharedPreferencesUtil {
 
         if (user != null) {
 
-            this.setItem("user", user.toJSON());
+            this.setItem(USER_KEY, user.toJSON());
 
         } else {
 
-            this.setItem("user", null);
+            this.setItem(USER_KEY, null);
 
         }
+
+    }
+
+    public ArrayList<Refuel> getRefuels() {
+
+        String refuels = this.getItem(REFUELS_KEY);
+
+        ArrayList<Refuel> refuelsList = new ArrayList<Refuel>();
+
+        if (refuels.equals("{}")) {
+
+            return refuelsList;
+
+        }
+
+        try {
+
+            JSONArray object = new JSONArray(refuels);
+
+            for (int i = 0; i < object.length(); i++) {
+                Refuel refuel = new Refuel(object.getJSONObject(i));
+                refuelsList.add(refuel);
+            }
+
+            return refuelsList;
+
+        } catch (Exception e) {
+
+            return refuelsList;
+
+        }
+
+    }
+
+    public void setRefuels(ArrayList<Refuel> refuels) {
+
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < refuels.size(); i++) {
+
+            jsonArray.put(refuels.get(i).toJSON());
+
+        }
+
+
+        this.setItem(REFUELS_KEY, jsonArray.toString());
 
     }
 
