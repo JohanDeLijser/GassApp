@@ -15,12 +15,9 @@ import java.util.ArrayList;
 
 import nl.gassapp.gassapp.Adapters.RefuelListAdapter;
 import nl.gassapp.gassapp.DataModels.Refuel;
-import nl.gassapp.gassapp.DataModels.User;
-import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
-import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.viewmodels.AddRefuelViewModal;
+import nl.gassapp.gassapp.viewmodels.AddRefuelViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button logoutButton;
     private FloatingActionButton addButton;
 
-    private final AddRefuelViewModal addRefuelViewModal = new AddRefuelViewModal();
+    private final AddRefuelViewModel addRefuelViewModal = new AddRefuelViewModel();
     private ArrayList<Refuel> allRefuels;
 
     private LinearLayout singleRefuelContent;

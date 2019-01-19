@@ -1,7 +1,9 @@
 package nl.gassapp.gassapp.Views;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -11,95 +13,67 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import es.dmoral.toasty.Toasty;
 import nl.gassapp.gassapp.R;
+import nl.gassapp.gassapp.databinding.ActivityAddRefuelBinding;
+import nl.gassapp.gassapp.viewmodels.AddRefuelViewModel;
+import nl.gassapp.gassapp.viewmodels.RegisterViewModel;
 
 public class AddRefuelActivity extends AppCompatActivity {
-    
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Button backButton;
-    private Button addImage;
-    private ImageView refuelImageThumbnail;
-    private Button saveRefuel;
-    private String base64Image;
-    private Double kilometersDriven;
+
+    private AddRefuelViewModel viewModel;
+
+    private Button addRefuelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_refuel);
 
-        backButton = (Button) findViewById(R.id.backButton);
-        addImage = (Button) findViewById(R.id.addImage);
-        refuelImageThumbnail = (ImageView) findViewById(R.id.refuelImageThumbnail);
-        saveRefuel = (Button) findViewById(R.id.saveRefuel);
+        viewModel = ViewModelProviders.of(this).get(AddRefuelViewModel.class);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMainView();
-            }
-        });
+        ActivityAddRefuelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_refuel);
 
+        binding.setViewModel(viewModel);
 
-        if (this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            addImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dispatchTakePictureIntent();
-                }
-            });
+        setupListeners();
+    }
+
+    private void setupListeners() {
+
+        viewModel.getReturnMessage().observe(this, response -> onResponseMessage(response));
+        viewModel.getLoadingState().observe(this, response -> onLoading(response));
+
+    }
+
+    private void onResponseMessage(Integer message) {
+
+        if (message == RegisterViewModel.REGISTER_OK) {
+            Toasty.success(this, "Successfully registered! You can now log in!", Toast.LENGTH_SHORT, true).show();
+            openMainActivity();
+
+        } else if (message == RegisterViewModel.REGISTER_FALSE) {
+            Toasty.error(this, "Something went wrong while registering, either this e-mail is already taken, or some of the other fields aren't filled in correctly", Toast.LENGTH_LONG, true).show();
         } else {
-            System.out.println("No usable camera");
-        }
-
-        saveRefuel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveCurrentRefuel();
-            }
-        });
-    }
-
-    private void openMainView() {
-        Intent mainViewIntent = new Intent(this, MainActivity.class);
-        startActivity(mainViewIntent);
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            Toasty.error(this, "Network error, something went wrong", Toast.LENGTH_SHORT, true).show();
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            refuelImageThumbnail.setImageBitmap(imageBitmap);
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-            base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        }
+    private void openMainActivity() {
+        Intent openMain = new Intent(this, MainActivity.class);
+        openMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(openMain);
     }
 
-    private void saveCurrentRefuel() {
-        EditText kilometers = (EditText) findViewById(R.id.kilometers);
+    private void onLoading(Boolean loading) {
 
-        if (kilometers != null && base64Image != null) {
-            kilometersDriven = Double.parseDouble(kilometers.getText().toString());
-            System.out.println(kilometersDriven);
-            System.out.println("Image is set");
-        } else {
-            System.out.println("Not all fields were filled in!");
+        if (addRefuelButton == null) {
+            addRefuelButton = findViewById(R.id.addRefuelButton);
         }
+
+        addRefuelButton.setEnabled(!loading);
     }
 }

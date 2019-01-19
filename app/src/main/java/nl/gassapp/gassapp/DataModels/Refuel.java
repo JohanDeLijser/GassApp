@@ -11,11 +11,12 @@ public class Refuel {
     private Double liters;
     private Double price;
     private Double kilometers;
-
     private String picturePath;
 
     private static DecimalFormat df2 = new DecimalFormat(".##");
 
+    public Refuel() {
+    }
 
     public Refuel(JSONObject object) {
 
@@ -59,8 +60,26 @@ public class Refuel {
         return kilometers;
     }
 
+    public String getPicturePath() { return picturePath; }
+
     public String getPricePerKilometer() {
         df2.setRoundingMode(RoundingMode.UP);
         return df2.format(getPrice() / getKilometers());
+    }
+
+    public void setLiters(Double liters) {
+        this.liters = liters;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setKilometers(Double kilometers) {
+        this.kilometers = kilometers;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

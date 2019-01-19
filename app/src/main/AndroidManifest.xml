@@ -25,11 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Views.AddRefuelActivity" />
         <activity android:name=".Views.MainActivity" />
         <activity android:name=".Views.RefuelDetailActivity" />
         <activity android:name=".Views.EditRefuelActivity" />
-        <activity android:name=".Views.RegisterActivity"></activity>
+        <activity android:name=".Views.RegisterActivity" />
+        <activity android:name=".Views.AddRefuelActivity"></activity>
     </application>
 
 </manifest>

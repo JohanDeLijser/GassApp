@@ -67,14 +67,10 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public MutableLiveData<Integer> getReturnMessage() {
-
         return this.returnMessage;
-
     }
 
     public MutableLiveData<Boolean> getLoadingState() {
-
         return this.loadingState;
-
     }
 }

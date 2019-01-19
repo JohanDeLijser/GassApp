@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 
@@ -175,6 +176,54 @@ public class HttpUtil {
         params.put("lastname", user.getLastname());
 
         JSONObject jsonParams = new JSONObject(params);
+
+        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
+        {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                if(response != null) {
+
+                    try {
+
+                        JSONObject user = response.getJSONObject("data");
+
+                        listener.getResult(user);
+
+                    } catch (JSONException e) {
+
+                        listener.getError(0);
+
+                    }
+
+                } else {
+
+                    listener.getError(0);
+
+                }
+
+            }
+        }, listener);
+
+    }
+
+    public void addRefuel(Refuel refuel, final RequestResponseListener<JSONObject> listener)
+    {
+        String url = API_URL + "/refuel/create";
+
+        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
+        headers.put("authentication", SharedPreferencesUtil.getInstance().getUser().getToken());
+
+        params.put("liters", refuel.getLiters());
+        params.put("price", refuel.getPrice());
+        params.put("kilometers", refuel.getKilometers());
+        params.put("picture", refuel.getPicturePath());
+
+        JSONObject jsonParams = new JSONObject(params);
+
+        System.out.println(jsonParams);
 
         this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
         {

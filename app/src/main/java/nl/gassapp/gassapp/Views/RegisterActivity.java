@@ -17,8 +17,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private RegisterViewModel viewModel;
 
-    private Button backButton;
-
     private Button registerButton;
 
     @Override
