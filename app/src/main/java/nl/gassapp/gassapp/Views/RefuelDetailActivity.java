@@ -43,14 +43,14 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
         Refuel refuel = refuels.get(position);
 
-        price.setText(Double.toString(refuel.getPrice()));
+        price.setText("€" + Double.toString(refuel.getPrice()));
 
-        liters.setText(Double.toString(refuel.getLiters()));
+        liters.setText(Double.toString(refuel.getLiters()) + "L");
 
-        kilometers.setText(Double.toString(refuel.getKilometers()));
+        kilometers.setText(Double.toString(refuel.getKilometers()) + "km");
 
-        litersPKm.setText(refuel.getLitersPerKilometers());
-        pricePKm.setText(refuel.getPricePerKilometer());
+        litersPKm.setText("1/" + refuel.getLitersPerKilometers());
+        pricePKm.setText("€0" + refuel.getPricePerKilometer());
 
     }
 
