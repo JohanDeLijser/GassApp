@@ -1,10 +1,10 @@
 package nl.gassapp.gassapp.viewmodels;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
@@ -24,8 +24,8 @@ public class MainViewModel extends ViewModel {
             }
 
             @Override
-            public void getError(int error) {
-                System.out.println(error);
+            public void getError(NetworkError error) {
+                System.out.println(error.getMessage());
             }
         });
 

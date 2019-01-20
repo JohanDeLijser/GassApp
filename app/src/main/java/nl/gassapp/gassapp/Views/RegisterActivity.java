@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import es.dmoral.toasty.Toasty;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.databinding.ActivityRegisterBinding;
 import nl.gassapp.gassapp.viewmodels.RegisterViewModel;
@@ -34,21 +35,19 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setupListeners() {
 
-        viewModel.getReturnMessage().observe(this, response -> onResponseMessage(response));
-        viewModel.getLoadingState().observe(this, response -> onLoading(response));
+        viewModel.getReturnMessage().observe(this, this::onResponseMessage);
+        viewModel.getLoadingState().observe(this, this::onLoading);
 
     }
 
-    private void onResponseMessage(Integer message) {
+    private void onResponseMessage(NetworkError networkError) {
 
-        if (message == RegisterViewModel.REGISTER_OK) {
-            Toasty.success(this, "Successfully registered! You can now log in!", Toast.LENGTH_SHORT, true).show();
+        if (networkError.getCode().equals(NetworkError.OK)) {
+            Toasty.success(this, networkError.getMessage(), Toast.LENGTH_SHORT, true).show();
             openLoginActivity();
 
-        } else if (message == RegisterViewModel.REGISTER_FALSE) {
-            Toasty.error(this, "Something went wrong while registering, either this e-mail is already taken, or some of the other fields aren't filled in correctly", Toast.LENGTH_LONG, true).show();
         } else {
-            Toasty.error(this, "Network error, something went wrong", Toast.LENGTH_SHORT, true).show();
+            Toasty.error(this, networkError.getMessage(), Toast.LENGTH_SHORT, true).show();
         }
     }
 

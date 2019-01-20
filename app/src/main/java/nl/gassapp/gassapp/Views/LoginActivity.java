@@ -1,6 +1,7 @@
 package nl.gassapp.gassapp.Views;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -8,9 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.jesusm.kfingerprintmanager.KFingerprintManager;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
@@ -38,44 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         //Instance shared preferences util
         SharedPreferencesUtil.getInstance(this);
 
-        final User user = SharedPreferencesUtil.getInstance().getUser();
-
-        if (user != null) {
-
-            HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
-
-                @Override
-                public void getResult(User object) {
-
-                    if (user.getEmail().equals(object.getEmail())) {
-
-                        openMainActivity();
-
-                    } else {
-
-                        SharedPreferencesUtil.getInstance().setUser(null);
-
-                    }
-
-                }
-
-                @Override
-                public void getError(int error) {
-
-                    /*
-
-                        TODO: Report error. If it is a network error
-
-                     */
-
-                    SharedPreferencesUtil.getInstance().setUser(null);
-
-                }
-
-            });
-
-        }
-
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
@@ -92,18 +62,137 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        final User user = SharedPreferencesUtil.getInstance().getUser();
+
+        if (user != null) {
+
+            String key = "USER_STORAGE_EMAIL";
+
+            KFingerprintManager fingerPrintManager = new KFingerprintManager(this, key);
+
+            Context context = this;
+
+            fingerPrintManager.authenticate(new KFingerprintManager.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSuccess() {
+                    HttpUtil.getInstance().getUser(user, new RequestResponseListener<User>() {
+
+                        @Override
+                        public void getResult(User object) {
+
+                            if (user.getEmail().equals(object.getEmail())) {
+
+                                String firstName = SharedPreferencesUtil.getInstance().getUser().getFirstname();
+
+                                Toasty.success(
+                                        context,
+                                        "Welcome back " + firstName,
+                                        Toast.LENGTH_SHORT,
+                                        true)
+                                        .show();
+
+                                openMainActivity();
+
+                            } else {
+
+                                SharedPreferencesUtil.getInstance().setUser(null);
+
+                                Toasty.error(
+                                        context,
+                                        "Token expired. Login again",
+                                        Toast.LENGTH_SHORT,
+                                        true)
+                                        .show();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void getError(NetworkError error) {
+
+                            Toasty.error(
+                                    context,
+                                    error.getMessage(),
+                                    Toast.LENGTH_SHORT,
+                                    true)
+                                    .show();
+
+                            SharedPreferencesUtil.getInstance().setUser(null);
+
+                        }
+
+                    });
+                }
+
+                @Override
+                public void onSuccessWithManualPassword(@NotNull String s) {
+                    viewModel.user.setEmail(user.getEmail());
+                    viewModel.user.setPassword(s);
+                    viewModel.onLoginClicked();
+                }
+
+                @Override
+                public void onFingerprintNotRecognized() {
+                    Toasty.error(
+                            context,
+                            "Fingerprint not recognized",
+                            Toast.LENGTH_SHORT,
+                            true)
+                            .show();
+                }
+
+                @Override
+                public void onAuthenticationFailedWithHelp(@Nullable String s) {
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    Toasty.error(
+                            context,
+                            "Please login again",
+                            Toast.LENGTH_SHORT,
+                            true)
+                            .show();
+                }
+
+                @Override
+                public void onFingerprintNotAvailable() {
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    Toasty.error(
+                            context,
+                            "Fingerprint not available. Please login",
+                            Toast.LENGTH_SHORT,
+                            true)
+                            .show();
+                }
+
+                @Override
+                public void onCancelled() {
+                    SharedPreferencesUtil.getInstance().setUser(null);
+
+                    Toasty.error(
+                            context,
+                            "Please login again",
+                            Toast.LENGTH_SHORT,
+                            true)
+                            .show();
+                }
+            }, getSupportFragmentManager());
+
+        }
+
     }
 
     private void setupListeners() {
 
-        viewModel.getReturnMessage().observe(this, response -> onResponseMessage(response));
-        viewModel.getLoadingState().observe(this, response -> onLoading(response));
+        viewModel.getReturnMessage().observe(this, this::onResponseMessage);
+        viewModel.getLoadingState().observe(this, this::onLoading);
 
     }
 
-    private void onResponseMessage(Integer message) {
+    private void onResponseMessage(NetworkError networkError) {
 
-        if (message == LoginViewModel.LOGIN_OK) {
+        if (networkError.getCode().equals(NetworkError.OK)) {
 
             String firstName = SharedPreferencesUtil.getInstance().getUser().getFirstname();
 
@@ -116,20 +205,11 @@ public class LoginActivity extends AppCompatActivity {
 
             openMainActivity();
 
-        } else if (message == LoginViewModel.LOGIN_FALSE) {
-
-            Toasty.error(
-                    this,
-                    "Email or password is incorrect",
-                    Toast.LENGTH_SHORT,
-                    true)
-                    .show();
-
         } else {
 
             Toasty.error(
                     this,
-                    "Network error",
+                    networkError.getMessage(),
                     Toast.LENGTH_SHORT,
                     true)
                     .show();

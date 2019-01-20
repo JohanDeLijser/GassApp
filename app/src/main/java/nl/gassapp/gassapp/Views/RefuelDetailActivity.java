@@ -35,13 +35,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         litersPKm = (TextView) findViewById(R.id.litersPKm);
         pricePKm = (TextView) findViewById(R.id.pricePKm);
 
-        editRefuel = (Button) findViewById(R.id.editRefuel);
-
-        editRefuel.setOnClickListener((View v) -> {
-                editRefuelView();
-            }
-        );
-
         Bundle revievedParams = getIntent().getExtras();
 
         ArrayList<Refuel> refuels = SharedPreferencesUtil.getInstance().getRefuels();
@@ -59,11 +52,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         litersPKm.setText(refuel.getLitersPerKilometers());
         pricePKm.setText(refuel.getPricePerKilometer());
 
-    }
-
-    private void editRefuelView() {
-        Intent editViewIntent = new Intent(this, AddEditRefuelActivity.class);
-        startActivity(editViewIntent);
     }
 
 }

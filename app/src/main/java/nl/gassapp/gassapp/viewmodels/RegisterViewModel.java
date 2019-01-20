@@ -3,23 +3,18 @@ package nl.gassapp.gassapp.viewmodels;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import nl.gassapp.gassapp.DataModels.EditUser;
-import nl.gassapp.gassapp.DataModels.User;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 
 public class RegisterViewModel extends ViewModel {
 
-    public static final int REGISTER_OK = 0;
-    public static final int REGISTER_FALSE = 1;
-    public static final int REGISTER_ERROR = 2;
-
     private EditUser user;
 
-    private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
+    private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public RegisterViewModel() {
@@ -51,23 +46,19 @@ public class RegisterViewModel extends ViewModel {
         HttpUtil.getInstance().registerUser(user, new RequestResponseListener<JSONObject>() {
             @Override
             public void getResult(JSONObject object) {
-                returnMessage.setValue(REGISTER_OK);
+                returnMessage.setValue(new NetworkError(NetworkError.OK, "Account created"));
                 loadingState.setValue(false);
             }
 
             @Override
-            public void getError(int errorCode) {
-                if (errorCode != 400) {
-                    returnMessage.setValue(REGISTER_ERROR);
-                } else {
-                    returnMessage.setValue(REGISTER_FALSE);
-                }
+            public void getError(NetworkError networkError) {
+                returnMessage.setValue(networkError);
                 loadingState.setValue(false);
             }
         });
     }
 
-    public MutableLiveData<Integer> getReturnMessage() {
+    public MutableLiveData<NetworkError> getReturnMessage() {
         return this.returnMessage;
     }
 

@@ -2,39 +2,23 @@ package nl.gassapp.gassapp.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import nl.gassapp.gassapp.DataModels.EditRefuel;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.Refuel;
-import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
-import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class AddEditRefuelViewModel extends ViewModel {
 
-    public static final int ADD_REFUEL_OK = 0;
-    public static final int ADD_REFUEL_FALSE = 1;
-    public static final int ADD_REFUEL_ERROR = 2;
-
     private EditRefuel refuel;
 
     private String base64Image;
 
-    private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
+    private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public AddEditRefuelViewModel() {
@@ -79,23 +63,19 @@ public class AddEditRefuelViewModel extends ViewModel {
 
                 SharedPreferencesUtil.getInstance().setRefuels(refuels);
 
-                returnMessage.setValue(ADD_REFUEL_OK);
+                returnMessage.setValue(new NetworkError(NetworkError.OK, "Created refuel"));
                 loadingState.setValue(false);
             }
 
             @Override
-            public void getError(int errorCode) {
-                if (errorCode != 400) {
-                    returnMessage.setValue(ADD_REFUEL_FALSE);
-                } else {
-                    returnMessage.setValue(ADD_REFUEL_ERROR);
-                }
+            public void getError(NetworkError errorCode) {
+                returnMessage.setValue(errorCode);
                 loadingState.setValue(false);
             }
         });
     }
 
-    public MutableLiveData<Integer> getReturnMessage() {
+    public MutableLiveData<NetworkError> getReturnMessage() {
         return this.returnMessage;
     }
 

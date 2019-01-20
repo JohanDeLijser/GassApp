@@ -19,6 +19,7 @@ import java.util.Map;
 
 import nl.gassapp.gassapp.DataModels.EditRefuel;
 import nl.gassapp.gassapp.DataModels.EditUser;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
@@ -91,11 +92,41 @@ public class HttpUtil {
                     if (error.networkResponse != null)
                     {
 
-                        listener.getError(error.networkResponse.statusCode);
+                        if (error.networkResponse.statusCode == NetworkError.BAD_REQUEST) {
+
+                            try {
+
+                                String JsonError = new String(error.networkResponse.data);
+
+                                JSONObject jsonObject = new JSONObject(JsonError);
+
+                                JSONObject data = jsonObject.getJSONObject("data");
+
+                                String message = data.getString("message");
+
+                                listener.getError(new NetworkError(error.networkResponse.statusCode, message));
+
+                            } catch (JSONException e) {
+
+                                listener.getError(new NetworkError(error.networkResponse.statusCode, "Server error"));
+
+                            }
+
+
+
+                        } else if (error.networkResponse.statusCode == NetworkError.NOT_AUTHORIZED) {
+
+                            listener.getError(new NetworkError(error.networkResponse.statusCode, "Not authorized"));
+
+                        } else {
+
+                            listener.getError(new NetworkError(error.networkResponse.statusCode, "Server error"));
+
+                        }
 
                     } else {
 
-                        listener.getError(0);
+                        listener.getError(new NetworkError(0, "Network error"));
 
                     }
 
@@ -143,13 +174,13 @@ public class HttpUtil {
 
                     } catch (JSONException e) {
 
-                        listener.getError(0);
+                        listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                     }
 
                 } else {
 
-                    listener.getError(0);
+                    listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
 
@@ -185,13 +216,13 @@ public class HttpUtil {
 
                     } catch (JSONException e) {
 
-                        listener.getError(0);
+                        listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                     }
 
                 } else {
 
-                    listener.getError(0);
+                    listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
 
@@ -229,7 +260,7 @@ public class HttpUtil {
 
                 } catch (JSONException e) {
 
-                    listener.getError(0);
+                    listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
 
@@ -259,13 +290,13 @@ public class HttpUtil {
 
                     } catch (JSONException e) {
 
-                        listener.getResult(null);
+                        listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                     }
 
                 } else {
 
-                    listener.getError(0);
+                    listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
 
@@ -306,7 +337,7 @@ public class HttpUtil {
 
                 } else {
 
-                    listener.getError(0);
+                    listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
 

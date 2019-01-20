@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import es.dmoral.toasty.Toasty;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.R;
 import android.databinding.DataBindingUtil;
 import android.provider.MediaStore;
@@ -57,33 +58,24 @@ public class AddEditRefuelActivity extends AppCompatActivity {
 
     }
 
-    private void onResponseMessage(Integer message) {
+    private void onResponseMessage(NetworkError message) {
 
-        if (message == AddEditRefuelViewModel.ADD_REFUEL_OK) {
+        if (message.getCode().equals(NetworkError.OK)) {
 
             Toasty.success(
                     this,
-                    "Refuel added ",
+                    message.getMessage(),
                     Toast.LENGTH_SHORT,
                     true)
                     .show();
 
             openMainActivity();
 
-        } else if (message == AddEditRefuelViewModel.ADD_REFUEL_FALSE) {
-
-            Toasty.error(
-                    this,
-                    "Not able to add the refuel",
-                    Toast.LENGTH_SHORT,
-                    true)
-                    .show();
-
         } else {
 
             Toasty.error(
                     this,
-                    "Network error",
+                    message.getMessage(),
                     Toast.LENGTH_SHORT,
                     true)
                     .show();

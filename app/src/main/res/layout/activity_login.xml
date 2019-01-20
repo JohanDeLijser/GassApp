@@ -22,30 +22,31 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="80dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="4dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-            android:id="@+id/emailField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="email"
-            android:afterTextChanged="@{(editable)->viewModel.afterEmailTextChanged(editable)}"
-            android:inputType="textEmailAddress"
-            />
+                android:id="@+id/emailField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:afterTextChanged="@{(editable)->viewModel.afterEmailTextChanged(editable)}"
+                android:ems="10"
+                android:hint="email"
+                android:inputType="textEmailAddress" />
 
             <EditText
             android:id="@+id/passwordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="password"
             android:afterTextChanged="@{(editable)->viewModel.afterPasswordTextChanged(editable)}"
@@ -56,6 +57,8 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+                android:textColor="@color/white"
             android:text="LOGIN"
             android:onClick="@{()->viewModel.onLoginClicked()}"
             />
@@ -64,8 +67,8 @@
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Havent got an account? Register here!"
-                />
+                android:background="@color/white"
+                android:text="Havent got an account? Register here!" />
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

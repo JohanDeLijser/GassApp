@@ -2,29 +2,51 @@ package nl.gassapp.gassapp.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Intent;
 
 import nl.gassapp.gassapp.DataModels.EditUser;
+import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.Views.RegisterActivity;
 
 public class LoginViewModel extends ViewModel {
 
-    public static final int LOGIN_OK = 0;
-    public static final int LOGIN_FALSE = 1;
-    public static final int LOGIN_ERROR = 2;
+    public EditUser user;
 
-    private EditUser user;
-
-    private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
+    private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
+
+    private Boolean checkInput = true;
 
     public LoginViewModel() {
 
         user = new EditUser();
+
+        loadingState.setValue(true);
+
+    }
+
+    private void checkEnabled() {
+
+        if (checkInput) {
+
+            if (
+                    user.getEmail() != null &&
+                    user.getPassword() != null &&
+                    !user.getEmail().isEmpty() &&
+                    !user.getPassword().isEmpty()
+            ) {
+
+                loadingState.setValue(false);
+
+            } else {
+
+                loadingState.setValue(true);
+
+            }
+
+        }
 
     }
 
@@ -32,11 +54,15 @@ public class LoginViewModel extends ViewModel {
 
         user.setEmail(s.toString());
 
+        checkEnabled();
+
     }
 
     public void afterPasswordTextChanged(CharSequence s) {
 
         user.setPassword(s.toString());
+
+        checkEnabled();
 
     }
 
@@ -44,33 +70,28 @@ public class LoginViewModel extends ViewModel {
 
         this.loadingState.setValue(true);
 
+        this.checkInput = false;
+
         HttpUtil.getInstance().authenticateUser(user, new RequestResponseListener<User>() {
             @Override
             public void getResult(User object) {
                 SharedPreferencesUtil.getInstance().setUser(object);
-                returnMessage.setValue(LOGIN_OK);
+                returnMessage.setValue(new NetworkError(NetworkError.OK, "Login successful"));
                 loadingState.setValue(false);
             }
 
             @Override
-            public void getError(int errorCode) {
-                if (errorCode != 400) {
-
-                    returnMessage.setValue(LOGIN_ERROR);
-
-                } else {
-
-                    returnMessage.setValue(LOGIN_FALSE);
-
-                }
-
+            public void getError(NetworkError networkError) {
+                returnMessage.setValue(networkError);
                 loadingState.setValue(false);
             }
         });
 
     }
 
-    public MutableLiveData<Integer> getReturnMessage() {
+    public MutableLiveData<NetworkError> getReturnMessage() {
+
+        this.checkInput = true;
 
         return this.returnMessage;
 
