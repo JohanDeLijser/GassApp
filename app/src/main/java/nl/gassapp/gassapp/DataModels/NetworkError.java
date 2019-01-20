@@ -1,7 +1,14 @@
 package nl.gassapp.gassapp.DataModels;
 
+/**
+ * NetworkError Modal
+ *
+ * Contains the api response code
+ * contains a message to be shown the to user
+ */
 public class NetworkError {
 
+    //CONST response codes
     public static final Integer OK = 200;
     public static final Integer BAD_REQUEST = 400;
     public static final Integer NOT_AUTHORIZED = 401;

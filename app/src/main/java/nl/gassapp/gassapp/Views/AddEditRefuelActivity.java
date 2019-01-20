@@ -34,14 +34,26 @@ public class AddEditRefuelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*
+
+            Code below sets the viewModal Variable in the xml file related to this activity
+
+            This is needed in the xml file by using onClick methods for the ViewModal
+
+         */
+
         viewModel = ViewModelProviders.of(this).get(AddEditRefuelViewModel.class);
 
         ActivityAddRefuelBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_refuel);
 
         binding.setViewModel(viewModel);
 
+        //Setup the observables
         setupListeners();
 
+        //Sets up the takeImageButton
+        //takeImage is defined in the view because it is depended on functions that
+        //AppCompactActivity provides us
         Button takeImage = (Button) findViewById(R.id.addImage);
 
         takeImage.setOnClickListener((View v) -> {
@@ -58,6 +70,13 @@ public class AddEditRefuelActivity extends AppCompatActivity {
         viewModel.getLoadingState().observe(this, this::onLoading);
 
     }
+
+    /*
+
+        onResponseMessage and onLoading are functions used to update the view
+        when a request is going to be execute or is executed
+
+     */
 
     private void onResponseMessage(NetworkError message) {
 
@@ -97,6 +116,13 @@ public class AddEditRefuelActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * Tries to open the camera and returns it when user is finished
+     *
+     * When no camera is not available it will notify the user
+     *
+     */
     private void dispatchTakePictureIntent() {
 
         try {
@@ -120,6 +146,15 @@ public class AddEditRefuelActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * If a image is captured the function will convert it to base64 because
+     * that is needed by the api for uploading the image
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -131,7 +166,7 @@ public class AddEditRefuelActivity extends AppCompatActivity {
             byte[] byteArray = byteArrayOutputStream .toByteArray();
 
             String base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
+            //Image is always in the png format
             viewModel.afterImageTextChanged("data:image/png;base64," + base64Image);
         }
     }

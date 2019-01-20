@@ -15,11 +15,8 @@ import com.jesusm.kfingerprintmanager.KFingerprintManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-
 import es.dmoral.toasty.Toasty;
 import nl.gassapp.gassapp.DataModels.NetworkError;
-import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
@@ -28,6 +25,12 @@ import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 import nl.gassapp.gassapp.viewmodels.LoginViewModel;
 import nl.gassapp.gassapp.databinding.ActivityLoginBinding;
 
+/**
+ *
+ * A lot of methods in this document are similar for all the views
+ * refer to Views.AddEditRefuelActivity for more information on the methods used
+ *
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel viewModel;
@@ -63,6 +66,22 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         final User user = SharedPreferencesUtil.getInstance().getUser();
+
+        /*
+
+            Checks if the user is found in the SharedPreferencesUtil
+
+            if so execute the following steps
+
+            - Access the fingerprint and show it to the user
+                - If fingerprint not available the user has to login again
+                - If user wants to use password validate the password with a api request
+            - On success fingerprint authentication
+                - Validate the token stored with the api
+                    - If token invalid let the user login again
+                    - If token valid startup the MainActivity
+
+         */
 
         if (user != null) {
 

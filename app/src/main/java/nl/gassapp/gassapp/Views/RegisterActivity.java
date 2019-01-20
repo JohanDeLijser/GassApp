@@ -14,6 +14,12 @@ import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.databinding.ActivityRegisterBinding;
 import nl.gassapp.gassapp.viewmodels.RegisterViewModel;
 
+/**
+ *
+ * A lot of methods in this document are similar for all the views
+ * refer to Views.AddEditRefuelActivity for more information on the methods used
+ *
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private RegisterViewModel viewModel;

@@ -6,6 +6,13 @@ import org.json.JSONObject;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+/**
+ *  A Refuel Model
+ *
+ *  A Refuel model contains a refuel trip
+ *  a refuel model has only one optional parameter that is picture path
+ *  a refuel model does not contain a id when not created because this is the id of the refuel in the api
+ */
 public class Refuel {
 
     private Integer id;
@@ -32,7 +39,7 @@ public class Refuel {
 
         } catch (JSONException e) {
 
-            //no code
+            //A empty object will be created when the JSONObject is invalid
 
         }
 
@@ -58,11 +65,25 @@ public class Refuel {
         return picturePath;
     }
 
+    /**
+     * Calculation of the price per kilometer
+     *
+     * Price / Kilometers = price per kilometer
+     *
+     * @return String
+     */
     public String getPricePerKilometer() {
         df2.setRoundingMode(RoundingMode.UP);
         return df2.format(getPrice() / getKilometers());
     }
 
+    /**
+     * Calculation of the liters per kilometer
+     *
+     * kilometers / liters = liters used in a kilometer
+     *
+     * @return String
+     */
     public String getLitersPerKilometers() {
         df2.setRoundingMode(RoundingMode.UP);
         return df2.format(getKilometers() / getLiters());

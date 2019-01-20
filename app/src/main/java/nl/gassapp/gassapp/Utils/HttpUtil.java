@@ -34,11 +34,18 @@ public class HttpUtil {
 
     private HttpUtil(Context context)
     {
-
+        //setup the request que
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
 
     }
 
+    /**
+     * Passes the context and sets the a instance in a static variable so the
+     * instance can be received at any time in the application
+     *
+     * @param context
+     * @return null || HttpUtil
+     */
     public static synchronized HttpUtil getInstance(Context context)
     {
 
@@ -52,7 +59,12 @@ public class HttpUtil {
 
     }
 
-    //this is so you don't need to pass context each time
+    /**
+     * Get instance without the context so there is no need to pass it every time
+     *
+     * @return HttpUTil
+     * @throws IllegalStateException
+     */
     public static synchronized HttpUtil getInstance()
     {
         if (instance == null)
@@ -63,6 +75,16 @@ public class HttpUtil {
         return instance;
     }
 
+    /**
+     *
+     * A request without the params object
+     *
+     * @param method
+     * @param url
+     * @param headers
+     * @param okCallback
+     * @param listener
+     */
     private void request(
             int method,
             String url,
@@ -70,11 +92,22 @@ public class HttpUtil {
             Response.Listener<JSONObject> okCallback,
             final RequestResponseListener listener
     ) {
-
+        //Calls the request with params = null
         this.request(method, url, null, headers, okCallback, listener);
 
     }
 
+    /**
+     *
+     * The request that is used by every http request
+     *
+     * @param method
+     * @param url
+     * @param params
+     * @param headers
+     * @param okCallback
+     * @param listener
+     */
     private void request(
             int method,
             String url,
@@ -150,6 +183,19 @@ public class HttpUtil {
 
     }
 
+    /**
+     * Checks if the credentials are true
+     *
+     * this function returns a user object on success
+     * this function returns a appropriate error on failure
+     *
+     * Take a note at the exception handling because it returns a server error.
+     * All exceptions in during parsing the request response will result in a server error
+     * because the server did something wrong with sending the right response
+     *
+     * @param user
+     * @param listener
+     */
     public void authenticateUser(EditUser user, final RequestResponseListener<User> listener)
     {
 
@@ -178,12 +224,14 @@ public class HttpUtil {
 
                     } catch (JSONException e) {
 
+                        //Sets a server error because the json should be readable by the application
                         listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                     }
 
                 } else {
 
+                    //Sets a server error because the json should be readable by the application
                     listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                 }
@@ -192,6 +240,15 @@ public class HttpUtil {
 
     }
 
+    /**
+     * Checks if the user can be created
+     *
+     * this function returns a user object on success
+     * this function returns a appropriate error on failure
+     *
+     * @param user
+     * @param listener
+     */
     public void registerUser(User user, final RequestResponseListener<JSONObject> listener)
     {
 
@@ -371,7 +428,7 @@ public class HttpUtil {
 
                         } catch (JSONException e) {
 
-                            listener.getResult(false);
+                            listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
 
                         }
 

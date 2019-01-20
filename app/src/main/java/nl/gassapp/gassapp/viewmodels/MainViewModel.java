@@ -11,8 +11,22 @@ import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
+/**
+ *
+ * The biggest difference between MainViewModel and the other ViewModals
+ * is that MainViewModal does not contain any MutatebleLiveData.
+ *
+ * This is because the sharedPreferencesUtil has a MutatebleLiveData return function so no
+ * is need here because the view directly observes the sharedPreferencesUtil one
+ *
+ */
 public class MainViewModel extends ViewModel {
 
+    /**
+     *
+     * Fetches the user refuel trips from the api and saves them in the sharedPreferences
+     *
+     */
     public void fetchRefuels() {
 
         User user = SharedPreferencesUtil.getInstance().getUser();

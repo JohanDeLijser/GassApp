@@ -22,7 +22,13 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
     private ArrayList<Refuel> refuels;
     private Context context;
 
-
+    /**
+     *
+     * Get the context and the data that the Refuellist needs to be populated with
+     *
+     * @param context
+     * @param refuels
+     */
     public RefuelListAdapter(Context context, ArrayList<Refuel> refuels) {
         this.context = context;
         this.refuels = refuels;
@@ -40,14 +46,16 @@ public class RefuelListAdapter extends RecyclerView.Adapter<RefuelListAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
+        //Create a refuel object of the position
         Refuel refuel = refuels.get(position);
 
+        //Set properties in the cell
         holder.kilometers.setText(String.valueOf(refuel.getKilometers()));
         holder.price.setText(String.valueOf(refuel.getPrice()));
         holder.button.setOnClickListener((View view) -> {
             Intent refuelDetailIntent = new Intent(view.getContext(), RefuelDetailActivity.class);
             Bundle params = new Bundle();
+            //Send the position to the RefuelDetailActivity so the activity is known of the which object is clicked
             params.putInt("position", position);
             refuelDetailIntent.putExtras(params);
             context.startActivity(refuelDetailIntent);

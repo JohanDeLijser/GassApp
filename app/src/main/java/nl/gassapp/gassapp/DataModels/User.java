@@ -1,10 +1,14 @@
 package nl.gassapp.gassapp.DataModels;
 
-import android.support.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * A User Model
+ *
+ * a user model contains email and the password when logging in
+ * a user model contains all the fields expect a password when authenticated
+ */
 public class User {
 
     protected String email;

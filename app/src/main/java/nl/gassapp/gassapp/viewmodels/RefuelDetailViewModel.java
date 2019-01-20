@@ -2,11 +2,6 @@ package nl.gassapp.gassapp.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.ImageView;
-
-import java.io.InputStream;
 
 import nl.gassapp.gassapp.DataModels.NetworkError;
 import nl.gassapp.gassapp.DataModels.Refuel;
@@ -19,6 +14,16 @@ public class RefuelDetailViewModel extends ViewModel {
 
     private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
+
+    /*
+
+        This view uses the same architecture as the LoginViewModal
+        Refer to LoginViewModal.onLoginClicked for more information about what
+        the function does
+
+        The sames goes for the MutableLiveData methods
+
+     */
 
     public void deleteRefuel(Refuel refuel) {
 
@@ -49,9 +54,6 @@ public class RefuelDetailViewModel extends ViewModel {
                 loadingState.setValue(false);
             }
         });
-
-
-        System.out.println(refuel.getId());
 
     }
 

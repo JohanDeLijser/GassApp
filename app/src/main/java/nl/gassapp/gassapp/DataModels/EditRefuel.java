@@ -1,5 +1,14 @@
 package nl.gassapp.gassapp.DataModels;
 
+/**
+ * A EditRefuel Modal
+ *
+ * This modal is for some setters that are needed during the creation of a refuel
+ *
+ * After the processes are complete and verified by the api there will be a refuel object created.
+ * so the setters are not available at verified refuel objects
+ *
+ */
 public class EditRefuel extends Refuel {
 
     private String image;

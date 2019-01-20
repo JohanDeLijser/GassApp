@@ -16,14 +16,20 @@ public class AddEditRefuelViewModel extends ViewModel {
 
     private EditRefuel refuel;
 
-    private String base64Image;
-
     private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public AddEditRefuelViewModel() {
         refuel = new EditRefuel();
     }
+
+
+    /*
+
+        methods below will check for changes in the input fields
+        and update the EditRefuel object accordingly
+
+     */
 
     public void afterLitersTextChanged(CharSequence s) {
         if (!s.toString().isEmpty()) {
@@ -49,13 +55,20 @@ public class AddEditRefuelViewModel extends ViewModel {
         }
     }
 
+    /**
+     *
+     * The button handler for the created button.
+     *
+     * All field validation will be done by the api and the wrong information
+     * will be returned in the NetworkError object
+     *
+     */
     public void onAddRefuelClicked() {
         this.loadingState.setValue(true);
 
         HttpUtil.getInstance().addRefuel(refuel, new RequestResponseListener<Refuel>() {
             @Override
             public void getResult(Refuel object) {
-
 
                 ArrayList<Refuel> refuels = SharedPreferencesUtil.getInstance().getRefuels();
 
@@ -74,6 +87,12 @@ public class AddEditRefuelViewModel extends ViewModel {
             }
         });
     }
+
+    /*
+
+        Below methods are used for returning loading state and api response
+
+     */
 
     public MutableLiveData<NetworkError> getReturnMessage() {
         return this.returnMessage;

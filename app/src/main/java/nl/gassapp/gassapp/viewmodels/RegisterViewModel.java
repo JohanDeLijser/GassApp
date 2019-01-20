@@ -17,9 +17,18 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<NetworkError> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
+    /**
+     * Using a EditUser because this gives us access to the needed setters
+     */
     public RegisterViewModel() {
         user = new EditUser();
     }
+
+    /*
+
+        Methods to update the EditUser modal
+
+     */
 
     public void afterEmailTextChanged(CharSequence s) {
 
@@ -39,6 +48,16 @@ public class RegisterViewModel extends ViewModel {
     public void afterPasswordTextChanged(CharSequence s) {
         user.setPassword(s.toString());
     }
+
+    /*
+
+        This view uses the same architecture as the LoginViewModal
+        Refer to LoginViewModal.onLoginClicked for more information about what
+        the function does
+
+        The sames goes for the MutableLiveData methods
+
+     */
 
     public void onRegisterClicked() {
         this.loadingState.setValue(true);

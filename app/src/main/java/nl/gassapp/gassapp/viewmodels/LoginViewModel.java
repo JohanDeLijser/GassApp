@@ -21,14 +21,37 @@ public class LoginViewModel extends ViewModel {
 
     public LoginViewModel() {
 
+        /*
+
+            Here a EditUser modal is chosen because it gives us
+            access to the methods setEmail() and setPassword()
+
+         */
         user = new EditUser();
 
         loadingState.setValue(true);
 
     }
 
+    /**
+     *
+     * Checks if the login button can be enabled
+     *
+     */
     private void checkEnabled() {
 
+        /*
+
+            CheckInput checks if the inputs need to be checked.
+
+            This is done because the network request can disable the button.
+            But if the user types in a input field it could enable the button
+            but the request is still loading
+
+            So checkinput = true when there is no network request in progress
+            checkinput = false when there is a network request in progress
+
+         */
         if (checkInput) {
 
             if (
@@ -50,6 +73,13 @@ public class LoginViewModel extends ViewModel {
 
     }
 
+    /*
+
+        Methods for updating the EditUser object
+
+     */
+
+
     public void afterEmailTextChanged(CharSequence s) {
 
         user.setEmail(s.toString());
@@ -66,6 +96,13 @@ public class LoginViewModel extends ViewModel {
 
     }
 
+    /**
+     *
+     * Starts the login authentication.
+     *
+     * After the authentication the mutablelivedata will be updated so the view will be updated
+     *
+     */
     public void onLoginClicked() {
 
         this.loadingState.setValue(true);
@@ -88,6 +125,12 @@ public class LoginViewModel extends ViewModel {
         });
 
     }
+
+    /*
+
+        MutableLivedata so the view can observe for changes
+
+     */
 
     public MutableLiveData<NetworkError> getReturnMessage() {
 

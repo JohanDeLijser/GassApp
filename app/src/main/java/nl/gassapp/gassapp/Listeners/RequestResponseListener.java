@@ -1,9 +1,13 @@
 package nl.gassapp.gassapp.Listeners;
 
-import org.json.JSONObject;
-
 import nl.gassapp.gassapp.DataModels.NetworkError;
 
+/**
+ *
+ * The RequestResponseListner is used as a Callback for all httputil requests
+ *
+ * @param <T>
+ */
 public interface RequestResponseListener<T> {
 
     public void getResult(T object);

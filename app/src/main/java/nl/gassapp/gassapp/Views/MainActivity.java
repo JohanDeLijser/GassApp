@@ -18,7 +18,12 @@ import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 import nl.gassapp.gassapp.viewmodels.AddEditRefuelViewModel;
 import nl.gassapp.gassapp.viewmodels.MainViewModel;
 
-
+/**
+ *
+ * A lot of methods in this document are similar for all the views
+ * refer to Views.AddEditRefuelActivity for more information on the methods used
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Button logoutButton;
@@ -79,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * update the Refuellist when the SharedPreferencesUtil.refuels is updated
+     *
+     * @param refuels
+     */
     private void updateRefuelObject(ArrayList<Refuel> refuels) {
 
         allRefuels.clear();

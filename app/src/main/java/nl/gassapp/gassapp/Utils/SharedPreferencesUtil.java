@@ -33,6 +33,12 @@ public class SharedPreferencesUtil {
 
     }
 
+    /*
+
+        This function uses the same pattern for passing the context as in HttpUtil
+        for more information about it take a look at nl.gassapp.gassapp.Utils.HttpUtil docblock
+
+     */
     public static synchronized SharedPreferencesUtil getInstance(Context context)
     {
 
@@ -56,18 +62,34 @@ public class SharedPreferencesUtil {
         return instance;
     }
 
+    /**
+     * sets data in the sharedPreferences
+     *
+     * @param key
+     * @param value
+     * @return boolean
+     */
     private Boolean setItem(String key, String value) {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(key, value);
 
+        //Using a commit to be sure that the data is stored
         editor.commit();
 
         return true;
 
     }
 
+    /**
+     * gets data of the sharedPreferences
+     *
+     * returns a empty jsonobject when no data is found
+     *
+     * @param key
+     * @return String
+     */
     private String getItem(String key) {
 
         return sharedPreferences.getString(key, "{}");
@@ -128,10 +150,13 @@ public class SharedPreferencesUtil {
                 refuelsList.add(refuel);
             }
 
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            //Returns a empty list when no refuels can be loaded
+        }
 
         if (refuels.equals("{}")) {
 
+            //Returns a empty list when no refuels can be loaded
             return refuelsList;
 
         }
@@ -140,6 +165,12 @@ public class SharedPreferencesUtil {
 
     }
 
+    /**
+     * When the refuel list is updated the Refuellist will be updated.
+     * That is why this is reactive
+     *
+     * @return MutableLiveData<ArrayList<Refuel>>
+     */
     public MutableLiveData<ArrayList<Refuel>> getReactiveRefuels() {
 
         return refuels;

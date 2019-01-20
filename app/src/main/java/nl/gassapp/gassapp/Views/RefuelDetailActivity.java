@@ -51,13 +51,27 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        /*
+
+            Gets the parameters this contains the position of the selected item
+            in the refuel list
+
+         */
         Bundle revievedParams = getIntent().getExtras();
 
         ArrayList<Refuel> refuels = SharedPreferencesUtil.getInstance().getRefuels();
 
         Integer position = revievedParams.getInt("position");
 
+        //Create a object
         Refuel refuel = refuels.get(position);
+
+
+        /*
+
+            Sets the properties
+
+         */
 
         price.setText("€" + Double.toString(refuel.getPrice()));
 
@@ -70,10 +84,13 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
         refuelDetailViewModel = new RefuelDetailViewModel();
 
+        //Download the refuel image
         new DownloadImageTask((ImageView) findViewById(R.id.imageView))
                 .execute(refuel.getPicturePath() + "?token=" + SharedPreferencesUtil.getInstance().getUser().getToken());
 
         deleteRefuel = (Button) findViewById(R.id.deleteRefuel);
+
+        //Show a dialog to confirm the users action on deleting the refuel
 
         deleteRefuel.setOnClickListener((View v) -> {
 
@@ -154,6 +171,11 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
 }
 
+/**
+ *
+ * Downloads the image from the url and converts it to a bitmap
+ *
+ */
 class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
 
