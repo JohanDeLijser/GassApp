@@ -118,6 +118,10 @@ public class HttpUtil {
 
                             listener.getError(new NetworkError(error.networkResponse.statusCode, "Not authorized"));
 
+                        } else if (error.networkResponse.statusCode == NetworkError.NOT_FOUND) {
+
+                            listener.getError(new NetworkError(error.networkResponse.statusCode, "Resource not found"));
+
                         } else {
 
                             listener.getError(new NetworkError(error.networkResponse.statusCode, "Server error"));
@@ -343,6 +347,42 @@ public class HttpUtil {
 
             },
         listener);
+
+    }
+
+    public void deleteRefuel(User user, Refuel refuel, final RequestResponseListener<Boolean> listener)
+    {
+
+        String url = API_URL + "/refuel/delete/" + String.valueOf(refuel.getId());
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("authentication", user.getToken());
+
+        this.request(Request.Method.DELETE, url, headers, (JSONObject response) ->
+                {
+
+                    if(response != null) {
+
+                        try {
+
+                            Boolean ok = response.getBoolean("ok");
+
+                            listener.getResult(ok);
+
+                        } catch (JSONException e) {
+
+                            listener.getResult(false);
+
+                        }
+
+                    } else {
+
+                        listener.getError(new NetworkError(NetworkError.SERVER_ERROR, "Server error"));
+
+                    }
+
+                },
+                listener);
 
     }
 

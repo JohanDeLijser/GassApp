@@ -49,6 +49,7 @@ public class AddEditRefuelActivity extends AppCompatActivity {
             dispatchTakePictureIntent();
 
         });
+
     }
 
     private void setupListeners() {
