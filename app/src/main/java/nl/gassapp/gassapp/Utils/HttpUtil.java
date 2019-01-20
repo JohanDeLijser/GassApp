@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.gassapp.gassapp.DataModels.EditRefuel;
+import nl.gassapp.gassapp.DataModels.EditUser;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
@@ -113,7 +115,7 @@ public class HttpUtil {
 
     }
 
-    public void authenticateUser(User user, final RequestResponseListener<User> listener)
+    public void authenticateUser(EditUser user, final RequestResponseListener<User> listener)
     {
 
         String url = API_URL + "/authenticate/user";
@@ -197,51 +199,42 @@ public class HttpUtil {
 
     }
 
-    public void addRefuel(Refuel refuel, final RequestResponseListener<JSONObject> listener)
+    public void addRefuel(EditRefuel refuel, final RequestResponseListener<Refuel> listener)
     {
         String url = API_URL + "/refuel/create";
 
         Map<String, String> headers = new HashMap<String, String>();
-        Map<String, Object> params = new HashMap<String, Object>();
         headers.put("authentication", SharedPreferencesUtil.getInstance().getUser().getToken());
 
-        params.put("liters", refuel.getLiters());
-        params.put("price", refuel.getPrice());
-        params.put("kilometers", refuel.getKilometers());
-        params.put("picture", refuel.getPicturePath());
+        System.out.println(refuel.getImage());
 
-        JSONObject jsonParams = new JSONObject(params);
+        JSONObject jsonParams = new JSONObject();
 
-        System.out.println(jsonParams);
+        try {
 
-        this.request(Request.Method.POST, url, jsonParams, headers, new Response.Listener<JSONObject>()
-        {
-            @Override
-            public void onResponse(JSONObject response)
+            jsonParams.put("liters", refuel.getLiters());
+            jsonParams.put("kilometers", refuel.getKilometers());
+            jsonParams.put("price", refuel.getPrice());
+            jsonParams.put("picture", refuel.getImage());
+
+        } catch (Exception e) { }
+
+        this.request(Request.Method.POST, url, jsonParams, headers, (JSONObject response) ->
             {
 
-                if(response != null) {
+                try {
 
-                    try {
+                    JSONObject data = response.getJSONObject("data");
+                    listener.getResult(new Refuel(data));
 
-                        JSONObject user = response.getJSONObject("data");
-
-                        listener.getResult(user);
-
-                    } catch (JSONException e) {
-
-                        listener.getError(0);
-
-                    }
-
-                } else {
+                } catch (JSONException e) {
 
                     listener.getError(0);
 
                 }
 
-            }
-        }, listener);
+
+            }, listener);
 
     }
 
@@ -307,11 +300,7 @@ public class HttpUtil {
 
                         }
 
-                    } catch (JSONException e) {
-
-                        //EXCEPTION TODO
-
-                    }
+                    } catch (JSONException e) { }
 
                     listener.getResult(refuels);
 

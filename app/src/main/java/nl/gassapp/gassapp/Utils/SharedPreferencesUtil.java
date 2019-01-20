@@ -1,5 +1,6 @@
 package nl.gassapp.gassapp.Utils;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -20,6 +21,8 @@ public class SharedPreferencesUtil {
     private SharedPreferences sharedPreferences;
 
     private static SharedPreferencesUtil instance = null;
+
+    private MutableLiveData<ArrayList<Refuel>> refuels = new MutableLiveData<ArrayList<Refuel>>();
 
     private SharedPreferencesUtil(Context context)
     {
@@ -116,12 +119,6 @@ public class SharedPreferencesUtil {
 
         ArrayList<Refuel> refuelsList = new ArrayList<Refuel>();
 
-        if (refuels.equals("{}")) {
-
-            return refuelsList;
-
-        }
-
         try {
 
             JSONArray object = new JSONArray(refuels);
@@ -131,13 +128,21 @@ public class SharedPreferencesUtil {
                 refuelsList.add(refuel);
             }
 
-            return refuelsList;
+        } catch (Exception e) { }
 
-        } catch (Exception e) {
+        if (refuels.equals("{}")) {
 
             return refuelsList;
 
         }
+
+        return refuelsList;
+
+    }
+
+    public MutableLiveData<ArrayList<Refuel>> getReactiveRefuels() {
+
+        return refuels;
 
     }
 
@@ -151,6 +156,7 @@ public class SharedPreferencesUtil {
 
         }
 
+        this.refuels.setValue(refuels);
 
         this.setItem(REFUELS_KEY, jsonArray.toString());
 

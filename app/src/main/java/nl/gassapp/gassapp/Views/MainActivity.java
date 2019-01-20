@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import nl.gassapp.gassapp.Adapters.RefuelListAdapter;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
-import nl.gassapp.gassapp.viewmodels.AddRefuelViewModel;
+import nl.gassapp.gassapp.viewmodels.AddEditRefuelViewModel;
 import nl.gassapp.gassapp.viewmodels.MainViewModel;
 
 
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button logoutButton;
     private FloatingActionButton addButton;
 
-    private final AddRefuelViewModel addRefuelViewModal = new AddRefuelViewModel();
+    private final AddEditRefuelViewModel addRefuelViewModal = new AddEditRefuelViewModel();
     private ArrayList<Refuel> allRefuels;
 
     private MainViewModel mainViewModel;
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListeners() {
 
-        mainViewModel.getRefuels().observe(this, this::updateRefuelObject);
+        SharedPreferencesUtil.getInstance().getReactiveRefuels().observe(this, this::updateRefuelObject);
 
     }
 
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
      * Opens the add refuel activity
      */
     private void openAddRefuelActivity() {
-        Intent addRefuelIntent = new Intent(this, AddRefuelActivity.class);
+        Intent addRefuelIntent = new Intent(this, AddEditRefuelActivity.class);
         startActivity(addRefuelIntent);
     }
 

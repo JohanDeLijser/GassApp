@@ -14,37 +14,31 @@ import android.widget.ImageView;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
+import nl.gassapp.gassapp.DataModels.EditRefuel;
 import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.R;
 import nl.gassapp.gassapp.Utils.HttpUtil;
+import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
-public class AddRefuelViewModel extends ViewModel {
+public class AddEditRefuelViewModel extends ViewModel {
 
     public static final int ADD_REFUEL_OK = 0;
     public static final int ADD_REFUEL_FALSE = 1;
     public static final int ADD_REFUEL_ERROR = 2;
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private Refuel refuel;
-
-    private ImageView refuelImageThumbnail;
-
-    private EditText imageBase64;
+    private EditRefuel refuel;
 
     private String base64Image;
 
     private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
-    public AddRefuelViewModel() {
-        refuel = new Refuel();
-
-        imageBase64 = (EditText) findViewById(R.id.imageBase64);
-        refuelImageThumbnail = (ImageView) findViewById(R.id.refuelImageThumbnail);
+    public AddEditRefuelViewModel() {
+        refuel = new EditRefuel();
     }
 
     public void afterLitersTextChanged(CharSequence s) {
@@ -65,18 +59,26 @@ public class AddRefuelViewModel extends ViewModel {
         }
     }
 
-    public void afterImageTextChanged(CharSequence s) {
-        if (!s.toString().isEmpty()) {
-            refuel.setPicturePath(s.toString());
+    public void afterImageTextChanged(String s) {
+        if (!s.isEmpty()) {
+            refuel.setImage(s);
         }
     }
 
     public void onAddRefuelClicked() {
         this.loadingState.setValue(true);
 
-        HttpUtil.getInstance().addRefuel(refuel, new RequestResponseListener<JSONObject>() {
+        HttpUtil.getInstance().addRefuel(refuel, new RequestResponseListener<Refuel>() {
             @Override
-            public void getResult(JSONObject object) {
+            public void getResult(Refuel object) {
+
+
+                ArrayList<Refuel> refuels = SharedPreferencesUtil.getInstance().getRefuels();
+
+                refuels.add(object);
+
+                SharedPreferencesUtil.getInstance().setRefuels(refuels);
+
                 returnMessage.setValue(ADD_REFUEL_OK);
                 loadingState.setValue(false);
             }
@@ -99,31 +101,5 @@ public class AddRefuelViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getLoadingState() {
         return this.loadingState;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            refuelImageThumbnail.setImageBitmap(imageBitmap);
-
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-            base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-            imageBase64.setText(base64Image);
-        }
     }
 }

@@ -13,8 +13,6 @@ import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<Refuel>> refuels = new MutableLiveData<ArrayList<Refuel>>();
-
     public void fetchRefuels() {
 
         User user = SharedPreferencesUtil.getInstance().getUser();
@@ -23,7 +21,6 @@ public class MainViewModel extends ViewModel {
             @Override
             public void getResult(ArrayList<Refuel> object) {
                 SharedPreferencesUtil.getInstance().setRefuels(object);
-                refuels.setValue(object);
             }
 
             @Override
@@ -31,12 +28,6 @@ public class MainViewModel extends ViewModel {
                 System.out.println(error);
             }
         });
-
-    }
-
-    public MutableLiveData<ArrayList<Refuel>> getRefuels() {
-
-        return this.refuels;
 
     }
 

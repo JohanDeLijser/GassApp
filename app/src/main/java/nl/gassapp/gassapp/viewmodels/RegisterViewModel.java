@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import nl.gassapp.gassapp.DataModels.EditUser;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
@@ -16,13 +17,13 @@ public class RegisterViewModel extends ViewModel {
     public static final int REGISTER_FALSE = 1;
     public static final int REGISTER_ERROR = 2;
 
-    private User user;
+    private EditUser user;
 
     private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public RegisterViewModel() {
-        user = new User();
+        user = new EditUser();
     }
 
     public void afterEmailTextChanged(CharSequence s) {

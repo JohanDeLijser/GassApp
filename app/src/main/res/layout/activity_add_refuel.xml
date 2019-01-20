@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="nl.gassapp.gassapp.viewmodels.AddRefuelViewModel"
+            type="nl.gassapp.gassapp.viewmodels.AddEditRefuelViewModel"
             />
 
     </data>
@@ -17,25 +17,12 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Views.AddRefuelActivity">
+        tools:context=".Views.AddEditRefuelActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/backButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Back"/>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,14 +44,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add image"
-                        android:onClick="@{()->viewModel.dispatchTakePictureIntent()}"/>
-
-                    <EditText
-                        android:id="@+id/imageBase64"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="invisible"
-                        android:afterTextChanged="@{(editable)->viewModel.afterImageTextChanged(editable)}"/>
+                        />
 
                     <ImageView
                         android:id="@+id/refuelImageThumbnail"

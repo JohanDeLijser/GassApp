@@ -1,18 +1,15 @@
 package nl.gassapp.gassapp.Views;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.sql.Ref;
 import java.util.ArrayList;
-
-import nl.gassapp.gassapp.DataModels.Refuel;
 import nl.gassapp.gassapp.R;
+import android.widget.Button;
+import android.content.Intent;
+import android.widget.TextView;
+import android.widget.ImageView;
+import nl.gassapp.gassapp.DataModels.Refuel;
+import android.support.v7.app.AppCompatActivity;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 
 public class RefuelDetailActivity extends AppCompatActivity {
@@ -40,12 +37,10 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
         editRefuel = (Button) findViewById(R.id.editRefuel);
 
-        editRefuel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        editRefuel.setOnClickListener((View v) -> {
                 editRefuelView();
             }
-        });
+        );
 
         Bundle revievedParams = getIntent().getExtras();
 
@@ -54,7 +49,6 @@ public class RefuelDetailActivity extends AppCompatActivity {
         Integer position = revievedParams.getInt("position");
 
         Refuel refuel = refuels.get(position);
-
 
         price.setText(Double.toString(refuel.getPrice()));
 
@@ -68,7 +62,7 @@ public class RefuelDetailActivity extends AppCompatActivity {
     }
 
     private void editRefuelView() {
-        Intent editViewIntent = new Intent(this, EditRefuelActivity.class);
+        Intent editViewIntent = new Intent(this, AddEditRefuelActivity.class);
         startActivity(editViewIntent);
     }
 

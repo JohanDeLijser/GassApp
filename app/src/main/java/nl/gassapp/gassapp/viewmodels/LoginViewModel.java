@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 
+import nl.gassapp.gassapp.DataModels.EditUser;
 import nl.gassapp.gassapp.DataModels.User;
 import nl.gassapp.gassapp.Listeners.RequestResponseListener;
 import nl.gassapp.gassapp.Utils.HttpUtil;
@@ -16,14 +17,14 @@ public class LoginViewModel extends ViewModel {
     public static final int LOGIN_FALSE = 1;
     public static final int LOGIN_ERROR = 2;
 
-    private User user;
+    private EditUser user;
 
     private MutableLiveData<Integer> returnMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
 
     public LoginViewModel() {
 
-        user = new User();
+        user = new EditUser();
 
     }
 
@@ -46,8 +47,7 @@ public class LoginViewModel extends ViewModel {
         HttpUtil.getInstance().authenticateUser(user, new RequestResponseListener<User>() {
             @Override
             public void getResult(User object) {
-                user = object;
-                SharedPreferencesUtil.getInstance().setUser(user);
+                SharedPreferencesUtil.getInstance().setUser(object);
                 returnMessage.setValue(LOGIN_OK);
                 loadingState.setValue(false);
             }

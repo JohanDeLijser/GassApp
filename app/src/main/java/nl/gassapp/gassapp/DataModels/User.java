@@ -7,11 +7,11 @@ import org.json.JSONObject;
 
 public class User {
 
-    private String email;
-    private String password;
+    protected String email;
+    protected String password;
     private String token;
-    private String firstname;
-    private String lastname;
+    protected String firstname;
+    protected String lastname;
 
     public User() {
     }
@@ -60,18 +60,6 @@ public class User {
 
     public String getLastname() {
         return lastname;
-    }
-
-    public void setEmail(@NonNull String email) {
-        this.email = email;
-    }
-
-    public void setFirstname(String firstname) { this.firstname = firstname; }
-
-    public void setLastname(String lastname) { this.lastname = lastname; }
-
-    public void setPassword(@NonNull String password) {
-        this.password = password;
     }
 
     public String toJSON(){

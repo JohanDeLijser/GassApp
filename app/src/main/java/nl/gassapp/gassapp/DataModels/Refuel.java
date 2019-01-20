@@ -10,10 +10,10 @@ public class Refuel {
 
     private Integer id;
 
-    private Double liters;
-    private Double price;
-    private Double kilometers;
-    private String picturePath;
+    protected Double liters;
+    protected Double price;
+    protected Double kilometers;
+    protected String picturePath;
 
     private static DecimalFormat df2 = new DecimalFormat(".##");
 
@@ -38,14 +38,6 @@ public class Refuel {
 
     }
 
-    public Refuel(Double liters, Double price, Double kilometers) {
-
-        this.liters = liters;
-        this.price = price;
-        this.kilometers = kilometers;
-
-    }
-
     public Integer getId() {
         return id;
     }
@@ -62,7 +54,9 @@ public class Refuel {
         return kilometers;
     }
 
-    public String getPicturePath() { return picturePath; }
+    public String getPicturePath() {
+        return picturePath;
+    }
 
     public String getPricePerKilometer() {
         df2.setRoundingMode(RoundingMode.UP);
@@ -72,22 +66,6 @@ public class Refuel {
     public String getLitersPerKilometers() {
         df2.setRoundingMode(RoundingMode.UP);
         return df2.format(getLiters() / getKilometers());
-    }
-
-    public void setLiters(Double liters) {
-        this.liters = liters;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setKilometers(Double kilometers) {
-        this.kilometers = kilometers;
-    }
-
-    public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
     }
 
     public JSONObject toJSON(){
