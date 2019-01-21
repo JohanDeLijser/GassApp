@@ -22,6 +22,7 @@ import nl.gassapp.gassapp.DataModels.Refuel;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import nl.gassapp.gassapp.Utils.DownloadImageUtil;
 import nl.gassapp.gassapp.Utils.SharedPreferencesUtil;
 import nl.gassapp.gassapp.viewmodels.RefuelDetailViewModel;
 
@@ -85,7 +86,7 @@ public class RefuelDetailActivity extends AppCompatActivity {
         refuelDetailViewModel = new RefuelDetailViewModel();
 
         //Download the refuel image
-        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
+        new DownloadImageUtil((ImageView) findViewById(R.id.imageView))
                 .execute(refuel.getPicturePath() + "?token=" + SharedPreferencesUtil.getInstance().getUser().getToken());
 
         deleteRefuel = (Button) findViewById(R.id.deleteRefuel);
@@ -169,33 +170,4 @@ public class RefuelDetailActivity extends AppCompatActivity {
 
     }
 
-}
-
-/**
- *
- * Downloads the image from the url and converts it to a bitmap
- *
- */
-class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
-
-    public DownloadImageTask(ImageView bmImage) {
-        this.bmImage = bmImage;
-    }
-
-    protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
-        Bitmap mIcon11 = null;
-        try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return mIcon11;
-    }
-
-    protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
-    }
 }
