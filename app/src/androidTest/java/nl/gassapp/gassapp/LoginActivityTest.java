@@ -1,9 +1,6 @@
 package nl.gassapp.gassapp;
 
-import android.content.Context;
-
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
