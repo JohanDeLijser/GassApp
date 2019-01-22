@@ -18,8 +18,8 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 
 public class AddRefuelActivityTest extends UITestCase {
 
-    private String testEmail = "jeroenfrenken@icloud.com";
-    private String testPassword = "Jeroen12";
+    private String testEmail = "test@test.com";
+    private String testPassword = "test";
 
     private String kilometers = "12.0";
     private String liters = "6";
@@ -27,15 +27,6 @@ public class AddRefuelActivityTest extends UITestCase {
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
-
-    @Before
-    public void setUp() {
-
-        Context targetContext = getInstrumentation().getTargetContext();
-
-        SharedPreferencesUtil.getInstance(targetContext).setUser(null);
-
-    }
 
     @Test
     public void signUpActivityTest() {
@@ -56,6 +47,12 @@ public class AddRefuelActivityTest extends UITestCase {
         fillInFieldInfo(R.id.priceInput, price);
 
         onView(withId(R.id.addRefuelButton)).perform(click());
+
+        pauseTestFor(700);
+
+        onView(withId(R.id.logoutButton)).perform(click());
+
+        pauseTestFor(500);
 
     }
 
