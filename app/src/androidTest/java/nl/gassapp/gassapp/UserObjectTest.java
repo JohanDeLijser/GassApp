@@ -37,7 +37,6 @@ public class UserObjectTest {
         assertEquals(user.getFirstname(), firstName);
         assertEquals(user.getLastname(), lastName);
 
-
     }
 
     @Test
