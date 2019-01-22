@@ -14,13 +14,6 @@ public class EditUserObjectTest {
     private String wrongEmail = "false-email";
     private String wrongPassword = "password";
 
-//    private Context instrumentationCtx;
-//
-//    @Before
-//    public void setup() {
-//        instrumentationCtx = InstrumentationRegistry.getContext();
-//    }
-
     @Test
     public void testUserObjectSetEmailMatch() {
 

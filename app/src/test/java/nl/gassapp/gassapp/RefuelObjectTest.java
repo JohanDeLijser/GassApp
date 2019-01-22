@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import nl.gassapp.gassapp.DataModels.Refuel;
-import nl.gassapp.gassapp.DataModels.User;
 
 import static org.junit.Assert.*;
 
@@ -38,18 +37,6 @@ public class RefuelObjectTest {
         Refuel refuel = new Refuel(jsonObject);
 
         assertEquals(refuel.getId(), id);
-//        assertEquals(refuel.getLiters(), liters);
-//        assertEquals(refuel.getKilometers(), kilometers);
-//        assertEquals(refuel.getPrice(), price);
-
-
 
     }
-
-    @Test
-    public void testRefuelObjectToJsonObject() {
-
-
-    }
-
 }
