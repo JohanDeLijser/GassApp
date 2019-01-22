@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     >
 
     <data>
@@ -23,14 +24,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="75dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="4dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="107dp"
+                app:srcCompat="@drawable/car" />
+
+            <TextView
+                android:id="@+id/textForEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="50dp"
+                android:ems="10"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:inputType="textPersonName"
+                android:text="Email" />
 
             <EditText
                 android:id="@+id/emailField"
@@ -39,37 +57,49 @@
                 android:layout_marginBottom="10dp"
                 android:afterTextChanged="@{(editable)->viewModel.afterEmailTextChanged(editable)}"
                 android:ems="10"
-                android:hint="email"
                 android:inputType="textEmailAddress" />
 
+            <TextView
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Password" />
+
             <EditText
-            android:id="@+id/passwordField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="password"
-            android:afterTextChanged="@{(editable)->viewModel.afterPasswordTextChanged(editable)}"
-            android:inputType="textPassword"
-            />
+                android:afterTextChanged="@{(editable)->viewModel.afterPasswordTextChanged(editable)}"
+                android:ems="10"
+                android:inputType="textPassword" />
 
             <Button
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-            android:text="LOGIN"
-            android:onClick="@{()->viewModel.onLoginClicked()}"
-            />
+                android:id="@+id/loginButton"
+                android:layout_width="305dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:onClick="@{()->viewModel.onLoginClicked()}"
+                android:text="LOGIN"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="Havent got an account? Register here!" />
+                android:enabled="true"
+                android:text="New user ? Signup"
+                android:textAllCaps="false" />
 
         </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
+
+
 </layout>
