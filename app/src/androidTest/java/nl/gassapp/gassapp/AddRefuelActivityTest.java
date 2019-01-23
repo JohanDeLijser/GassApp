@@ -8,6 +8,8 @@ import nl.gassapp.gassapp.Views.LoginActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class AddRefuelActivityTest extends UITestCase {
@@ -28,21 +30,21 @@ public class AddRefuelActivityTest extends UITestCase {
         fillInFieldInfo(R.id.emailField, testEmail);
         fillInFieldInfo(R.id.passwordField, testPassword);
 
-        onView(withId(R.id.loginButton)).perform(click());
+        onView(withId(R.id.loginButton)).perform(closeSoftKeyboard(), click());
 
         pauseTestFor(2500);
 
         onView(withId(R.id.addButton)).perform(click());
 
-        pauseTestFor(700);
+        pauseTestFor(1000);
 
         fillInFieldInfo(R.id.kilometersInput, kilometers);
         fillInFieldInfo(R.id.litersInput, liters);
         fillInFieldInfo(R.id.priceInput, price);
 
-        onView(withId(R.id.addRefuelButton)).perform(click());
+        onView(withId(R.id.addRefuelButton)).perform(closeSoftKeyboard(),click());
 
-        pauseTestFor(700);
+        pauseTestFor(2000);
 
         onView(withId(R.id.logoutButton)).perform(click());
 

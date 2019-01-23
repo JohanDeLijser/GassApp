@@ -10,6 +10,7 @@ import nl.gassapp.gassapp.Views.LoginActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class LoginActivityTest extends UITestCase {
@@ -27,11 +28,11 @@ public class LoginActivityTest extends UITestCase {
         fillInFieldInfo(R.id.emailField, testEmail);
         fillInFieldInfo(R.id.passwordField, testPassword);
 
-        onView(withId(R.id.loginButton)).perform(click());
+        onView(withId(R.id.loginButton)).perform(closeSoftKeyboard(), click());
 
         pauseTestFor(2500);
 
-        onView(withId(R.id.logoutButton)).perform(click());
+        onView(withId(R.id.logoutButton)).perform(closeSoftKeyboard(), click());
 
         pauseTestFor(500);
     }

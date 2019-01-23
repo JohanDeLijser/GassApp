@@ -8,6 +8,7 @@ import nl.gassapp.gassapp.Views.LoginActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class SignUpActivityTest extends UITestCase {
@@ -31,7 +32,7 @@ public class SignUpActivityTest extends UITestCase {
         fillInFieldInfo(R.id.lastname, testLastname);
         fillInFieldInfo(R.id.password, testPassword);
 
-        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.registerButton)).perform(closeSoftKeyboard(), click());
     }
 
 }
